@@ -20,6 +20,7 @@ public class Individus {
     public void new_Individus(){
         for (int i=0; i<16; i++){
             notes[i]=(int)(Math.random() * 127)+1;
+            fitness=0;
         }
     }
 }
