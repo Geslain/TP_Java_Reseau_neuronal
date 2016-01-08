@@ -11,7 +11,8 @@ public class MusicEvolution implements ActionListener {
     public Random geneAlea;
     
     public static void main(String[] args) {
-        MusicEvolution mg = new MusicEvolution();
+        Interface mg = new Interface();
+         mg.setVisible(true);
     }
     
     public MusicEvolution() {
