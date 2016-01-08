@@ -9,23 +9,30 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jdk.nashorn.internal.objects.NativeArray;
 import musicEvolution.Interfaces.NouvellePop1;
 
 /**
  *
  * @author Drap_housse
  */
-public class Interface extends javax.swing.JFrame {
+public class Interface extends javax.swing.JFrame implements Observer {
 
     private Sequence sequence;
     private Sequencer seq;
     private FileNameExtensionFilter filter;
+    private Modele m;
+    private int currentIndex = 0;
 
+    
+    
     /**
      * Creates new form Interface
      */
@@ -56,12 +63,16 @@ public class Interface extends javax.swing.JFrame {
         }
     }
 
-    public Interface() {
+    public Interface(Modele _m) {
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
        Dimension screenSize = kit.getScreenSize();
        int screenHeight = screenSize.height;
        int screenWidth = screenSize.width;
+       
+       m = _m;
+       m.addObserver(this);
+       m.demarre();
  
        // Centrer la fenêtre dans l'écran
        setSize(screenWidth / 2, screenHeight / 2);
@@ -390,7 +401,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
-        // TODO add your handling code here:
+        currentIndex = 0;
     }//GEN-LAST:event_jButton_NewpopActionPerformed
 
     private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
@@ -398,11 +409,20 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu_ExitActionPerformed
 
     private void jToggleButton_PlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_PlayActionPerformed
-        // TODO add your handling code here:
+        
+    // Crée la piste midi pour l'individu courant
+    MidiGeneratorHelper midi = new MidiGeneratorHelper();
+    midi.Init();
+    midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
+        for(int i = 0 ; i < 16 ; i++)
+        {
+            midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
+        }
+        midi.Play();        
     }//GEN-LAST:event_jToggleButton_PlayActionPerformed
 
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
-        // TODO add your handling code here:
+        currentIndex++;
     }//GEN-LAST:event_jButton_NextActionPerformed
 
     private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
@@ -431,59 +451,59 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        m.getPopulation().getIndividu(currentIndex).setFitness(1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        m.getPopulation().getIndividu(currentIndex).setFitness(2);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        m.getPopulation().getIndividu(currentIndex).setFitness(3);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        m.getPopulation().getIndividu(currentIndex).setFitness(4);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        m.getPopulation().getIndividu(currentIndex).setFitness(5);
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Interface().setVisible(true);
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Interface().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -512,4 +532,9 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton_Play;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
