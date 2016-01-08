@@ -22,11 +22,15 @@ public class Population {
     
     public Population(Population pop){
         Individu ind ;
+        
+        // Crossover
         for(int i = 0 ; i < 10 ;i++)
         {
             double rnd = Math.random();
             if (rnd < T_CROSS) {
+                //Selection
                 Individu parent1 = selection(pop);
+                //Selection
                 Individu parent2 = selection(pop);
                 ind = new Individu(parent1 , parent2);
             } else {
@@ -34,6 +38,7 @@ public class Population {
                 ind = new Individu(parent1);
             }
 
+            //Mutation
             ind.mutation();
             individus[i] = ind;
         }

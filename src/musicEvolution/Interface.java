@@ -30,6 +30,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private FileNameExtensionFilter filter;
     private Modele m;
     private int currentIndex = 0;
+    private int currentNote = 0;
 
     
     
@@ -142,6 +143,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         jButton_Prev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-premier-icone-4160-32.png"))); // NOI18N
+        jButton_Prev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_PrevActionPerformed(evt);
+            }
+        });
 
         jToggleButton_Play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/jouer-a-droite-fleche-icone-6822-32.png"))); // NOI18N
         jToggleButton_Play.addActionListener(new java.awt.event.ActionListener() {
@@ -401,7 +407,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
-        currentIndex = 0;
+        if(currentIndex == 10)
+        {
+            currentIndex = 0;
+            m.continu();
+        }
+        else {
+            System.err.println("Veuillez attribuer une note à chaque extrait");
+        }
     }//GEN-LAST:event_jButton_NewpopActionPerformed
 
     private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
@@ -422,7 +435,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jToggleButton_PlayActionPerformed
 
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
-        currentIndex++;
+        
+        if( (currentNote != 0 || m.getPopulation().getIndividu(currentIndex).getFitness() != 0 ) && currentIndex < 10)
+        {
+            if(currentNote != 0)
+            {
+                jTable_Recap.setValueAt(currentNote, currentIndex, 1);
+            }
+            currentIndex++;
+            currentNote = 0;            
+        } else {
+            System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
+        }        
     }//GEN-LAST:event_jButton_NextActionPerformed
 
     private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
@@ -451,24 +475,34 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        currentNote = 1;
         m.getPopulation().getIndividu(currentIndex).setFitness(1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        currentNote = 2;
         m.getPopulation().getIndividu(currentIndex).setFitness(2);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        currentNote = 3;
         m.getPopulation().getIndividu(currentIndex).setFitness(3);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        currentNote = 4;
         m.getPopulation().getIndividu(currentIndex).setFitness(4);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        currentNote = 5;
         m.getPopulation().getIndividu(currentIndex).setFitness(5);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton_PrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PrevActionPerformed
+        currentIndex--;
+        currentNote = 0;
+    }//GEN-LAST:event_jButton_PrevActionPerformed
 
 //    /**
 //     * @param args the command line arguments

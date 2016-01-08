@@ -245,6 +245,9 @@
           <Image iconType="3" name="/musicEvolution/Images/resultset-premier-icone-4160-32.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_PrevActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JToggleButton" name="jToggleButton_Play">
       <Properties>
