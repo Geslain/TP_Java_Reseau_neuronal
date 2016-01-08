@@ -76,7 +76,8 @@ public class Individu {
      */
     public void mutation(){
         for (int i=0; i<NB_NOTES_TRACK; i++){
-            if(Math.random() < T_MUT){
+            double rnd = Math.random();
+            if( rnd < T_MUT){
                 notes[i].randomNote();
             }
         }
@@ -113,5 +114,9 @@ public class Individu {
      */
     public void setFitness(int fitness) {
         this.fitness = fitness;
+    }
+
+    int getNote(int i) {
+        return notes[i].getId();
     }
 }
