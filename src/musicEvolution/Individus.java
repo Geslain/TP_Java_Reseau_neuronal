@@ -6,6 +6,9 @@
 
 package musicEvolution;
 
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  *
  * @author Trusty
@@ -19,7 +22,15 @@ public class Individus {
     }
     
     public Individus(Individus parent1, Individus parent2) {
-        ;
+        new_Individus_from_parents(parent1, parent2);
+    }
+    
+    public int getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(int fitness) {
+        this.fitness = fitness;
     }
     
     /* Permet d'initialiser un Individu *
@@ -38,28 +49,28 @@ public class Individus {
     
     /* Permet d'initialiser un Individu *
     * en fonction de ses deux parents. */
-    public void new_Individus_from_parents(Individus enfant, Individus parent1, Individus parent2){
-        enfant.notes.Init();
-        enfant.fitness=0;
+    public void new_Individus_from_parents(Individus parent1, Individus parent2){
+        notes.Init();
+        fitness=0;
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 2)+1) > 1){
-                enfant.notes.AjouterNote_from_Index(parent1.notes.Get_Note(i), i);
+                notes.AjouterNote_from_Index(parent1.notes.Get_Note(i), i);
             }
             else {
-                enfant.notes.AjouterNote_from_Index(parent2.notes.Get_Note(i), i);
+                notes.AjouterNote_from_Index(parent2.notes.Get_Note(i), i);
             }
         }
     }
     
-    public void new_Individus_from_unique_parent(Individus enfant, Individus parent){
-        enfant.notes.Init();
-        enfant.fitness=0;
+    public void new_Individus_from_unique_parent(Individus parent){
+        notes.Init();
+        fitness=0;
         for (int i=0; i<16; i++){
-            enfant.notes.AjouterNote_from_Index(parent.notes.Get_Note(i), i);
+            notes.AjouterNote_from_Index(parent.notes.Get_Note(i), i);
         }
     }
     
-    public void mutation_individu(Individus individu){
+    public void mutation_individu(){
         MidiGeneratorHelper t1 = null;
         t1.Init();
         t1.ChoisirInstrument((int)(Math.random() * 127)+1);
@@ -67,9 +78,20 @@ public class Individus {
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 16)+1) < 2){
                 t1.AjouterNote((int)(Math.random() * 127));
-                individu.notes.AjouterNote_from_Index(t1.Get_Note(cpt),i);
+                notes.AjouterNote_from_Index(t1.Get_Note(cpt),i);
                 cpt++;
             }
+        }
+    }
+    
+    public void Sauvegarde_Individu()
+     {
+        try {
+            final String chemin = "C:\\Users\\Trusty\\Documents\\NetBeansProjects\\MusicEvolution\\tmp.txt";
+            notes.EnregistrerFichier(chemin);
+        } 
+        catch (Exception e) {
+            System.out.println("Impossible de creer le fichier");
         }
     }
 }
