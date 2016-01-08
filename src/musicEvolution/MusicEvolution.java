@@ -1,4 +1,4 @@
-package midigenerator;
+package musicEvolution;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,15 +6,15 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class MidiGenerator implements ActionListener {
+public class MusicEvolution implements ActionListener {
     private MidiGeneratorHelper mgh;
     public Random geneAlea;
     
     public static void main(String[] args) {
-        MidiGenerator mg = new MidiGenerator();
+        MusicEvolution mg = new MusicEvolution();
     }
     
-    public MidiGenerator() {
+    public MusicEvolution() {
         // Création de la fenêtre
         JFrame fenetre = new JFrame();
         fenetre.setTitle("Générateur de mélodie");
