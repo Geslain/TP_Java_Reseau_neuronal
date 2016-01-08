@@ -14,84 +14,104 @@ import java.io.FileWriter;
  * @author Trusty
  */
 public class Individu {
-    public MidiGeneratorHelper notes;
-    public int fitness;
-    
+    private Note notes[];
+    private int fitness;
+    private static int instrument = (int)(Math.random() * 128)+1;
+    private static int NB_NOTES_TRACK = 16;
+    private double T_MUT = 1/NB_NOTES_TRACK;
+            
+    /**
+     * Permet d'initialiser un Individu 
+     * en lui attribuant une valeur de   
+     * fitness égale à 0 et de lui       
+     * attribuer un instrument avec 16   
+     * notes.                           
+     */
     public Individu() {
-        newIndividu();
+        notes = new Note[NB_NOTES_TRACK];
+        for (int i=0; i<NB_NOTES_TRACK; i++){
+            notes[i] = new Note();
+            notes[i].randomNote();
+        }
+        fitness = 0;
     }
     
+    /**
+     * Permet d'initialiser un Individu
+     * en fonction de ses deux parents.
+     * 
+     * @param parent 
+     */
+    public Individu(Individu parent) {
+        notes = new Note[NB_NOTES_TRACK];
+        fitness = 0;
+        for (int i=0; i<NB_NOTES_TRACK ;i++){
+            notes[i] = parent.notes[i];
+        }
+    }
+    
+    /**
+     * Permet d'initialiser un Individu
+     * en fonction de ses deux parents. 
+     * 
+     * @param parent1
+     * @param parent2 
+     */
     public Individu(Individu parent1, Individu parent2) {
-        newIndividuFromParents(parent1, parent2);
+        fitness = 0;
+        notes = new Note[NB_NOTES_TRACK];
+        int cutPoint = (int)(Math.random() * NB_NOTES_TRACK)+1;
+        for (int i=0; i<NB_NOTES_TRACK; i++){
+            if(i < cutPoint) {
+                notes[i] = parent1.notes[i];
+            } else {
+                notes[i] = parent2.notes[i];
+            }
+        }
+        mutation();
+    }
+        
+    /**
+     * 
+     */
+    public void mutation(){
+        for (int i=0; i<NB_NOTES_TRACK; i++){
+            if(Math.random() < T_MUT){
+                notes[i].randomNote();
+            }
+        }
+        mutation();
     }
     
+    /**
+     * 
+     * @return 
+     */
+     public Note[] getNotes() {
+        return notes;
+    }
+
+     /**
+      * 
+      * @return 
+      */
+    public static int getInstrument() {
+        return instrument;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
     public int getFitness() {
         return fitness;
     }
 
+    /**
+     * 
+     * @param fitness 
+     */
     public void setFitness(int fitness) {
         this.fitness = fitness;
-    }
-    
-    /* Permet d'initialiser un Individu *
-    * en lui attribuant une valeur de   *
-    * fitness égale à 0 et de lui       *
-    * attribuer un instrument avec 16   *
-    * notes.                           */ 
-    public void newIndividu(){
-        notes.Init();
-        notes.ChoisirInstrument((int)(Math.random() * 127)+1);
-        fitness=0;
-        for (int i=0; i<16; i++){
-            notes.AjouterNote((int)(Math.random() * 127));
-        }
-    }
-    
-    /* Permet d'initialiser un Individu *
-    * en fonction de ses deux parents. */
-    public void newIndividuFromParents(Individu parent1, Individu parent2){
-        notes.Init();
-        fitness=0;
-        for (int i=0; i<16; i++){
-            if(((int)(Math.random() * 2)+1) > 1){
-                notes.AjouterNote(parent1.notes.getT().get(i));
-            }
-            else {
-                notes.AjouterNote(parent2.notes.getT().get(i));
-            }
-        }
-    }
-    
-    public void newIndividuFromUniqueParent(Individu parent){
-        notes.Init();
-        fitness=0;
-        for (int i=0; i<16; i++){
-            notes.AjouterNote(parent.notes.getT().get(i));
-        }
-    }
-    
-    public void mutationIndividu(){
-        MidiGeneratorHelper t1 = null;
-        t1.Init();
-        t1.ChoisirInstrument((int)(Math.random() * 127)+1);
-        int cpt=0;
-        for (int i=0; i<16; i++){
-            if(((int)(Math.random() * 16)+1) < 2){
-                t1.AjouterNote((int)(Math.random() * 127));
-                notes.AjouterNote(i);
-                cpt++;
-            }
-        }
-    }
-    
-    public void sauvegardeIndividu()
-     {
-        try {
-            final String chemin = "tmp.midi";
-            notes.EnregistrerFichier(chemin);
-        } 
-        catch (Exception e) {
-            System.out.println("Impossible de creer le fichier");
-        }
     }
 }
