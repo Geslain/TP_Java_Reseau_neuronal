@@ -28,52 +28,43 @@ public class Interface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
         jTextField_Indnumber = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea_affichage = new javax.swing.JTextArea();
-        jToggleButton_prev = new javax.swing.JToggleButton();
-        jToggleButton_next = new javax.swing.JToggleButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jButton_Next = new javax.swing.JButton();
+        jButton_Prev = new javax.swing.JButton();
+        jToggleButton_Play = new javax.swing.JToggleButton();
+        jLabel_Rate = new javax.swing.JLabel();
+        jLabel_Indnum = new javax.swing.JLabel();
+        jComboBox_Rate = new javax.swing.JComboBox();
+        jMenuBar_princpal = new javax.swing.JMenuBar();
         jMenu_Fichier = new javax.swing.JMenu();
         jMenu_Newpop = new javax.swing.JMenuItem();
         jMenu_Openpop = new javax.swing.JMenuItem();
         jMenu_Saveas = new javax.swing.JMenuItem();
         jMenu_Exit = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jMenu_edit = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setEditable(false);
-        jTextField1.setText("Individu n°");
-        jTextField1.setBorder(null);
-        jTextField1.setDisabledTextColor(new java.awt.Color(240, 240, 240));
-
         jTextField_Indnumber.setEditable(false);
         jTextField_Indnumber.setBorder(null);
-        jTextField_Indnumber.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField_IndnumberActionPerformed(evt);
-            }
-        });
 
         jTextArea_affichage.setColumns(20);
         jTextArea_affichage.setRows(5);
         jScrollPane1.setViewportView(jTextArea_affichage);
 
-        jToggleButton_prev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-premier-icone-4160-32.png"))); // NOI18N
-        jToggleButton_prev.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton_prevActionPerformed(evt);
-            }
-        });
+        jButton_Next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-dernier-icone-7114-32.png"))); // NOI18N
 
-        jToggleButton_next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-dernier-icone-7114-32.png"))); // NOI18N
-        jToggleButton_next.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton_nextActionPerformed(evt);
-            }
-        });
+        jButton_Prev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-premier-icone-4160-32.png"))); // NOI18N
+
+        jToggleButton_Play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/jouer-a-droite-fleche-icone-6822-32.png"))); // NOI18N
+
+        jLabel_Rate.setText("Note :");
+
+        jLabel_Indnum.setText("Individu n°");
+
+        jComboBox_Rate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5" }));
 
         jMenu_Fichier.setText("Fichier ");
 
@@ -107,46 +98,56 @@ public class Interface extends javax.swing.JFrame {
         jMenu_Exit.setText("Fermer ");
         jMenu_Fichier.add(jMenu_Exit);
 
-        jMenuBar1.add(jMenu_Fichier);
+        jMenuBar_princpal.add(jMenu_Fichier);
 
-        jMenu2.setText("Edition");
-        jMenuBar1.add(jMenu2);
+        jMenu_edit.setText("Edition");
+        jMenuBar_princpal.add(jMenu_edit);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar_princpal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_Rate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox_Rate, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel_Indnum)
+                        .addGap(32, 32, 32)
                         .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jToggleButton_prev, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                            .addComponent(jToggleButton_next, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(211, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_Prev, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToggleButton_Play, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton_Next, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField_Indnumber)
-                    .addComponent(jTextField1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_Indnum))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToggleButton_prev, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToggleButton_next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                    .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jToggleButton_Play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -196,18 +197,21 @@ public class Interface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton jButton_Next;
+    private javax.swing.JButton jButton_Prev;
+    private javax.swing.JComboBox jComboBox_Rate;
+    private javax.swing.JLabel jLabel_Indnum;
+    private javax.swing.JLabel jLabel_Rate;
+    private javax.swing.JMenuBar jMenuBar_princpal;
     private javax.swing.JMenuItem jMenu_Exit;
     private javax.swing.JMenu jMenu_Fichier;
     private javax.swing.JMenuItem jMenu_Newpop;
     private javax.swing.JMenuItem jMenu_Openpop;
     private javax.swing.JMenuItem jMenu_Saveas;
+    private javax.swing.JMenu jMenu_edit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea_affichage;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField_Indnumber;
-    private javax.swing.JToggleButton jToggleButton_next;
-    private javax.swing.JToggleButton jToggleButton_prev;
+    private javax.swing.JToggleButton jToggleButton_Play;
     // End of variables declaration//GEN-END:variables
 }
