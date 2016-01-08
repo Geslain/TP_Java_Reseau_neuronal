@@ -1,4 +1,4 @@
-package midigenerator;
+package musicEvolution;
 
 import java.io.File;
 import javax.sound.midi.*;

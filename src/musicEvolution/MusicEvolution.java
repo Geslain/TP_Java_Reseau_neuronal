@@ -1,4 +1,4 @@
-package midigenerator;
+package musicEvolution;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,24 +6,24 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class MidiGenerator implements ActionListener {
+public class MusicEvolution implements ActionListener {
     private MidiGeneratorHelper mgh;
     public Random geneAlea;
     
     public static void main(String[] args) {
-        MidiGenerator mg = new MidiGenerator();
+        MusicEvolution mg = new MusicEvolution();
     }
     
-    public MidiGenerator() {
-        // Création de la fenêtre
+    public MusicEvolution() {
+        // CrÃ©ation de la fenÃªtre
         JFrame fenetre = new JFrame();
-        fenetre.setTitle("Générateur de mélodie");
+        fenetre.setTitle("GÃ©nÃ©rateur de mÃ©lodie");
         fenetre.setSize(300, 300);
         fenetre.setLocationRelativeTo(null);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setResizable(false);
-        // Création du bouton
-        JButton btn = new JButton("Cliquez pour jouer une mélodie aléatoire");
+        // CrÃ©ation du bouton
+        JButton btn = new JButton("Cliquez pour jouer une mÃ©lodie alÃ©atoire");
         btn.addActionListener(this);
         fenetre.setContentPane(btn);
         // Affichage
@@ -31,7 +31,7 @@ public class MidiGenerator implements ActionListener {
         
         // Helper
         mgh = new MidiGeneratorHelper();
-        // Générateur aléatoire
+        // GÃ©nÃ©rateur alÃ©atoire
         geneAlea = new Random();
     }
 
