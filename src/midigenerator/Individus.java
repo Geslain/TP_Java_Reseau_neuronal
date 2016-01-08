@@ -5,7 +5,6 @@
  */
 
 package midigenerator;
-
 /**
  *
  * @author Trusty
