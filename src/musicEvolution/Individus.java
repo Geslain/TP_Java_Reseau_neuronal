@@ -25,6 +25,14 @@ public class Individus {
         new_Individus_from_parents(parent1, parent2);
     }
     
+    public int getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(int fitness) {
+        this.fitness = fitness;
+    }
+    
     /* Permet d'initialiser un Individu *
     * en lui attribuant une valeur de   *
     * fitness égale à 0 et de lui       *
