@@ -123,7 +123,7 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel_Indnum.setText("Individu n°");
 
-        jComboBox_Rate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5" }));
+        jComboBox_Rate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
 
         jButton_Newpop.setText("Générer Nouvelle population");
         jButton_Newpop.addActionListener(new java.awt.event.ActionListener() {
