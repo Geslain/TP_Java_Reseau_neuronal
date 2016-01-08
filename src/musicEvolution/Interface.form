@@ -17,13 +17,13 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/musicEvolution/Images/fichier-nouveau-icone-3896-32.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Nouvelle Population ..."/>
+                <Property name="text" type="java.lang.String" value="Nouvelle Population"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu_NewpopActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenu_Openpop">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenu_Openind">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
@@ -31,8 +31,11 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/musicEvolution/Images/blanc-fichier-un-dossier-icone-9522-32.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ouvrir Population ..."/>
+                <Property name="text" type="java.lang.String" value="Ouvrir Individu..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu_OpenindActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenu_Saveas">
               <Properties>
@@ -45,6 +48,7 @@
                 <Property name="text" type="java.lang.String" value="Enregistrer sous ..."/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu_SaveasMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu_SaveasActionPerformed"/>
               </Events>
             </MenuItem>

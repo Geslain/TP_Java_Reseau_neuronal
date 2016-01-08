@@ -6,15 +6,52 @@
 
 package musicEvolution;
 
+import java.awt.HeadlessException;
+import java.io.File;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Drap_housse
  */
-public class Interface extends javax.swing.JFrame{
+public class Interface extends javax.swing.JFrame {
+    private Sequence sequence;
+    private Sequencer seq;
 
     /**
      * Creates new form Interface
      */
+    void EnregistrerFichier(String filename) {
+        try {
+            File file = new File(filename);
+            System.out.println("Lecture du nom");
+            MidiSystem.write(sequence, 1, file);
+            System.out.println("Enregistrement OK : " + filename);
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de la lecture !");
+        }
+    }
+    void OuvrirFichier(String filename) {
+        try {
+            File file = new File(filename);
+            System.out.println("Ouverture du fichier MIDI");
+            sequence = MidiSystem.getSequence(file);
+            try {
+                seq.setSequence(sequence);
+                seq.start();
+            }
+            catch (Exception e) {
+                System.out.println("Oups, problème lors de la lecture !");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de la lecture !");
+        }
+    }
     public Interface() {
         initComponents();
     }
@@ -45,7 +82,7 @@ public class Interface extends javax.swing.JFrame{
         jMenuBar_princpal = new javax.swing.JMenuBar();
         jMenu_Fichier = new javax.swing.JMenu();
         jMenu_Newpop = new javax.swing.JMenuItem();
-        jMenu_Openpop = new javax.swing.JMenuItem();
+        jMenu_Openind = new javax.swing.JMenuItem();
         jMenu_Saveas = new javax.swing.JMenuItem();
         jMenu_Exit = new javax.swing.JMenuItem();
         jMenu_edit = new javax.swing.JMenu();
@@ -151,7 +188,7 @@ public class Interface extends javax.swing.JFrame{
 
         jMenu_Newpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Newpop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/fichier-nouveau-icone-3896-32.png"))); // NOI18N
-        jMenu_Newpop.setText("Nouvelle Population ...");
+        jMenu_Newpop.setText("Nouvelle Population");
         jMenu_Newpop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_NewpopActionPerformed(evt);
@@ -159,14 +196,24 @@ public class Interface extends javax.swing.JFrame{
         });
         jMenu_Fichier.add(jMenu_Newpop);
 
-        jMenu_Openpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenu_Openpop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/blanc-fichier-un-dossier-icone-9522-32.png"))); // NOI18N
-        jMenu_Openpop.setText("Ouvrir Population ...");
-        jMenu_Fichier.add(jMenu_Openpop);
+        jMenu_Openind.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_Openind.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/blanc-fichier-un-dossier-icone-9522-32.png"))); // NOI18N
+        jMenu_Openind.setText("Ouvrir Individu...");
+        jMenu_Openind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_OpenindActionPerformed(evt);
+            }
+        });
+        jMenu_Fichier.add(jMenu_Openind);
 
         jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Saveas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
         jMenu_Saveas.setText("Enregistrer sous ...");
+        jMenu_Saveas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu_SaveasMouseClicked(evt);
+            }
+        });
         jMenu_Saveas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_SaveasActionPerformed(evt);
@@ -269,7 +316,25 @@ public class Interface extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenu_NewpopActionPerformed
 
     private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
-        // TODO add your handling code here:
+                try{
+                JFileChooser chooser = new JFileChooser();
+                // Dossier Courant
+               chooser.setCurrentDirectory(new  File("."+File.separator)); 
+                //Affichage et récupération de la réponse de l'utilisateur
+                int reponse = chooser.showDialog(chooser,"Enregistrer sous");
+                System.out.println(reponse);
+               // Si l'utilisateur clique sur OK
+               if  (reponse == JFileChooser.APPROVE_OPTION){
+                      // Récupération du chemin du fichier
+                     String  fichier= chooser.getSelectedFile().toString();
+                      //Ecriture du fichier
+                     fichier = fichier + ".midi";
+                     System.out.println(fichier);
+                     EnregistrerFichier(fichier);
+                }
+     }catch(HeadlessException he){
+               he.printStackTrace();
+     } 
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
@@ -291,6 +356,31 @@ public class Interface extends javax.swing.JFrame{
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_NextActionPerformed
+
+    private void jMenu_SaveasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_SaveasMouseClicked
+
+    }//GEN-LAST:event_jMenu_SaveasMouseClicked
+
+    private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
+        try{
+                JFileChooser chooser = new JFileChooser();
+                // Dossier Courant
+               chooser.setCurrentDirectory(new  File("."+File.separator)); 
+                //Affichage et récupération de la réponse de l'utilisateur
+                int reponse = chooser.showDialog(chooser,"Enregistrer sous");
+                System.out.println(reponse);
+               // Si l'utilisateur clique sur OK
+               if  (reponse == JFileChooser.APPROVE_OPTION){
+                      // Récupération du chemin du fichier
+                     String  fichier= chooser.getSelectedFile().toString();
+                      //Ouverture du fichier
+                     System.out.println(fichier);
+                     OuvrirFichier(fichier);
+                }
+     }catch(HeadlessException he){
+               he.printStackTrace();
+     } 
+    }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
     /**
      * @param args the command line arguments
@@ -340,7 +430,7 @@ public class Interface extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenu_Exit;
     private javax.swing.JMenu jMenu_Fichier;
     private javax.swing.JMenuItem jMenu_Newpop;
-    private javax.swing.JMenuItem jMenu_Openpop;
+    private javax.swing.JMenuItem jMenu_Openind;
     private javax.swing.JMenuItem jMenu_Saveas;
     private javax.swing.JMenu jMenu_edit;
     private javax.swing.JScrollPane jScrollPane1;
