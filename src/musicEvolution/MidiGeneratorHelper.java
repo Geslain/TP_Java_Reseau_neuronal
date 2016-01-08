@@ -10,6 +10,14 @@ public class MidiGeneratorHelper {
     private int nbTicks; // Là où va commencer la prochaine note
     private static int DUREE_TICK = 16; // Permet de rapprocher ou éloigner des notes
     
+    public Track getT() {
+        return t;
+    }
+
+    public void setT(Track t) {
+        this.t = t;
+    }
+    
     public void Init() {
         try {
             // Initialisation du séquenceur, de la séquence et de la piste de la séquence
@@ -40,9 +48,6 @@ public class MidiGeneratorHelper {
     }
     
     /* Permet de récupérer une note en fonction d'une Track */
-    public Track Get_Note(int i){
-        return sequence.getTracks()[i];
-    }
     
     
     public void AjouterNote(int nbNote) {
@@ -66,15 +71,13 @@ public class MidiGeneratorHelper {
             System.out.println("Oups, problème lors de l'ajout de la note !");
         }
     }
-    /* Permet d'ajouter une note en fonction d'une Track passée en paramètre */
-    public void AjouterNote_from_Index(Track t1, int index_note) {
-        try {
-            t1.add(t.get(index_note));
-            System.out.println("Ajout de note OK : ");
-        }
-        catch (Exception e) {
-            System.out.println("Oups, problème lors de l'ajout de la note !");
-        }
+    
+    public void AjouterNote(MidiEvent me) {
+            // Début de la note
+            t.add(me);
+            me.setTick(me.getTick()+DUREE_TICK);
+            t.add(me);
+            
     }
 
     void Play() {
