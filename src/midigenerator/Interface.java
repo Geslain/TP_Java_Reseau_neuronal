@@ -28,16 +28,50 @@ public class Interface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenu_Fichier = new javax.swing.JMenu();
+        jMenu_Newpop = new javax.swing.JMenuItem();
+        jMenu_Openpop = new javax.swing.JMenuItem();
+        jMenu_Saveas = new javax.swing.JMenuItem();
+        jMenu_Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jTextField1.setText("Individu n°");
 
-        jMenu2.setText("Edit");
+        jMenu_Fichier.setText("Fichier ");
+
+        jMenu_Newpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_Newpop.setText("Nouvelle Population ...");
+        jMenu_Newpop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_NewpopActionPerformed(evt);
+            }
+        });
+        jMenu_Fichier.add(jMenu_Newpop);
+
+        jMenu_Openpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_Openpop.setText("Ouvrir Population ...");
+        jMenu_Fichier.add(jMenu_Openpop);
+
+        jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_Saveas.setText("Enregistrer sous ...");
+        jMenu_Saveas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_SaveasActionPerformed(evt);
+            }
+        });
+        jMenu_Fichier.add(jMenu_Saveas);
+
+        jMenu_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        jMenu_Exit.setText("Fermer ");
+        jMenu_Fichier.add(jMenu_Exit);
+
+        jMenuBar1.add(jMenu_Fichier);
+
+        jMenu2.setText("Edition");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -46,15 +80,29 @@ public class Interface extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(332, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(248, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_NewpopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu_NewpopActionPerformed
+
+    private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,8 +140,13 @@ public class Interface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenu_Exit;
+    private javax.swing.JMenu jMenu_Fichier;
+    private javax.swing.JMenuItem jMenu_Newpop;
+    private javax.swing.JMenuItem jMenu_Openpop;
+    private javax.swing.JMenuItem jMenu_Saveas;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
