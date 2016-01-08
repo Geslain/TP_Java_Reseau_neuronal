@@ -5,3 +5,4 @@
 !.gitignore
 !/src/
 !/nbproject/
+!build.xml
