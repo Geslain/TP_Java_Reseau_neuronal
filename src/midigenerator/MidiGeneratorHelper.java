@@ -38,7 +38,12 @@ public class MidiGeneratorHelper {
             System.out.println("Oups, problème lors du choix de l'instrument !");
         }
     }
-
+    
+    /* Permet de récupérer une note en fonction d'une Track */
+    public Track Get_Note(int i){
+        return sequence.getTracks()[i];
+    }
+    
     public void AjouterNote(int nbNote) {
         try {
             // Début de la note
@@ -55,6 +60,16 @@ public class MidiGeneratorHelper {
             
             nbTicks += DUREE_TICK;
             System.out.println("Ajout de note OK : " + nbNote);
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de l'ajout de la note !");
+        }
+    }
+    /* Permet d'ajouter une note en fonction d'une Track passée en paramètre */
+    public void AjouterNote_from_Note(Track t1, int index_note) {
+        try {
+            t1.add(t.get(index_note));
+            System.out.println("Ajout de note OK : ");
         }
         catch (Exception e) {
             System.out.println("Oups, problème lors de l'ajout de la note !");
