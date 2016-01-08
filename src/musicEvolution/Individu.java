@@ -13,16 +13,16 @@ import java.io.FileWriter;
  *
  * @author Trusty
  */
-public class Individus {
+public class Individu {
     public MidiGeneratorHelper notes;
     public int fitness;
     
-    public Individus() {
-        new_Individus();
+    public Individu() {
+        newIndividu();
     }
     
-    public Individus(Individus parent1, Individus parent2) {
-        new_Individus_from_parents(parent1, parent2);
+    public Individu(Individu parent1, Individu parent2) {
+        newIndividuFromParents(parent1, parent2);
     }
     
     public int getFitness() {
@@ -38,7 +38,7 @@ public class Individus {
     * fitness égale à 0 et de lui       *
     * attribuer un instrument avec 16   *
     * notes.                           */ 
-    public void new_Individus(){
+    public void newIndividu(){
         notes.Init();
         notes.ChoisirInstrument((int)(Math.random() * 127)+1);
         fitness=0;
@@ -49,7 +49,7 @@ public class Individus {
     
     /* Permet d'initialiser un Individu *
     * en fonction de ses deux parents. */
-    public void new_Individus_from_parents(Individus parent1, Individus parent2){
+    public void newIndividuFromParents(Individu parent1, Individu parent2){
         notes.Init();
         fitness=0;
         for (int i=0; i<16; i++){
@@ -62,7 +62,7 @@ public class Individus {
         }
     }
     
-    public void new_Individus_from_unique_parent(Individus parent){
+    public void newIndividuFromUniqueParent(Individu parent){
         notes.Init();
         fitness=0;
         for (int i=0; i<16; i++){
@@ -70,7 +70,7 @@ public class Individus {
         }
     }
     
-    public void mutation_individu(){
+    public void mutationIndividu(){
         MidiGeneratorHelper t1 = null;
         t1.Init();
         t1.ChoisirInstrument((int)(Math.random() * 127)+1);
@@ -84,10 +84,10 @@ public class Individus {
         }
     }
     
-    public void Sauvegarde_Individu()
+    public void sauvegardeIndividu()
      {
         try {
-            final String chemin = "C:\\Users\\Trusty\\Documents\\NetBeansProjects\\MusicEvolution\\tmp.txt";
+            final String chemin = "tmp.midi";
             notes.EnregistrerFichier(chemin);
         } 
         catch (Exception e) {
