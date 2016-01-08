@@ -43,10 +43,10 @@ public class Individus {
         enfant.fitness=0;
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 2)+1) > 1){
-                enfant.notes.AjouterNote_from_Note(parent1.notes.Get_Note(i), i);
+                enfant.notes.AjouterNote_from_Index(parent1.notes.Get_Note(i), i);
             }
             else {
-                enfant.notes.AjouterNote_from_Note(parent2.notes.Get_Note(i), i);
+                enfant.notes.AjouterNote_from_Index(parent2.notes.Get_Note(i), i);
             }
         }
     }
@@ -55,14 +55,20 @@ public class Individus {
         enfant.notes.Init();
         enfant.fitness=0;
         for (int i=0; i<16; i++){
-            enfant.notes.AjouterNote_from_Note(parent.notes.Get_Note(i), i);
+            enfant.notes.AjouterNote_from_Index(parent.notes.Get_Note(i), i);
         }
     }
     
     public void mutation_individu(Individus individu){
+        MidiGeneratorHelper t1 = null;
+        t1.Init();
+        t1.ChoisirInstrument((int)(Math.random() * 127)+1);
+        int cpt=0;
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 16)+1) < 2){
-                //individu.notes.AjouterNote((int)(Math.random() * 127));
+                t1.AjouterNote((int)(Math.random() * 127));
+                individu.notes.AjouterNote_from_Index(t1.Get_Note(cpt),i);
+                cpt++;
             }
         }
     }

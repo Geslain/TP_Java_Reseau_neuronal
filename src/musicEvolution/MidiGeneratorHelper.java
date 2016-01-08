@@ -44,6 +44,7 @@ public class MidiGeneratorHelper {
         return sequence.getTracks()[i];
     }
     
+    
     public void AjouterNote(int nbNote) {
         try {
             // Début de la note
@@ -66,7 +67,7 @@ public class MidiGeneratorHelper {
         }
     }
     /* Permet d'ajouter une note en fonction d'une Track passée en paramètre */
-    public void AjouterNote_from_Note(Track t1, int index_note) {
+    public void AjouterNote_from_Index(Track t1, int index_note) {
         try {
             t1.add(t.get(index_note));
             System.out.println("Ajout de note OK : ");
