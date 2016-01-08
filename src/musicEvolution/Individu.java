@@ -54,10 +54,10 @@ public class Individu {
         fitness=0;
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 2)+1) > 1){
-                notes.AjouterNote_from_Index(parent1.notes.Get_Note(i), i);
+                notes.AjouterNote(parent1.notes.getT().get(i));
             }
             else {
-                notes.AjouterNote_from_Index(parent2.notes.Get_Note(i), i);
+                notes.AjouterNote(parent2.notes.getT().get(i));
             }
         }
     }
@@ -66,7 +66,7 @@ public class Individu {
         notes.Init();
         fitness=0;
         for (int i=0; i<16; i++){
-            notes.AjouterNote_from_Index(parent.notes.Get_Note(i), i);
+            notes.AjouterNote(parent.notes.getT().get(i));
         }
     }
     
@@ -78,7 +78,7 @@ public class Individu {
         for (int i=0; i<16; i++){
             if(((int)(Math.random() * 16)+1) < 2){
                 t1.AjouterNote((int)(Math.random() * 127));
-                notes.AjouterNote_from_Index(t1.Get_Note(cpt),i);
+                notes.AjouterNote(i);
                 cpt++;
             }
         }
