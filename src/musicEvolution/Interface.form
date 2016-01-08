@@ -48,7 +48,6 @@
                 <Property name="text" type="java.lang.String" value="Enregistrer sous ..."/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu_SaveasMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu_SaveasActionPerformed"/>
               </Events>
             </MenuItem>
@@ -63,7 +62,6 @@
                 <Property name="text" type="java.lang.String" value="Fermer "/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu_ExitMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu_ExitActionPerformed"/>
               </Events>
             </MenuItem>

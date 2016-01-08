@@ -12,6 +12,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -20,6 +21,7 @@ import javax.swing.JFileChooser;
 public class Interface extends javax.swing.JFrame {
     private Sequence sequence;
     private Sequencer seq;
+    private FileNameExtensionFilter filter;
 
     /**
      * Creates new form Interface
@@ -45,11 +47,11 @@ public class Interface extends javax.swing.JFrame {
                 seq.start();
             }
             catch (Exception e) {
-                System.out.println("Oups, problème lors de la lecture !");
+                System.out.println("Problème de lancement du Séquenceur");
             }
         }
         catch (Exception e) {
-            System.out.println("Oups, problème lors de la lecture !");
+            System.out.println("Problème : Absence de Sequence Lors de l'ouverture du fichier");
         }
     }
     public Interface() {
@@ -209,11 +211,6 @@ public class Interface extends javax.swing.JFrame {
         jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Saveas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
         jMenu_Saveas.setText("Enregistrer sous ...");
-        jMenu_Saveas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu_SaveasMouseClicked(evt);
-            }
-        });
         jMenu_Saveas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_SaveasActionPerformed(evt);
@@ -224,11 +221,6 @@ public class Interface extends javax.swing.JFrame {
         jMenu_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenu_Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/sortir-session-icone-5274-32.png"))); // NOI18N
         jMenu_Exit.setText("Fermer ");
-        jMenu_Exit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu_ExitMouseClicked(evt);
-            }
-        });
         jMenu_Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_ExitActionPerformed(evt);
@@ -341,10 +333,6 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_NewpopActionPerformed
 
-    private void jMenu_ExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_ExitMouseClicked
-        System.exit(0);
-    }//GEN-LAST:event_jMenu_ExitMouseClicked
-
     private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenu_ExitActionPerformed
@@ -357,15 +345,15 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_NextActionPerformed
 
-    private void jMenu_SaveasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_SaveasMouseClicked
-
-    }//GEN-LAST:event_jMenu_SaveasMouseClicked
-
     private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
         try{
+                // Filtre MIDI
+                filter = new FileNameExtensionFilter("Fichiers .MIDI", "midi");
                 JFileChooser chooser = new JFileChooser();
                 // Dossier Courant
                chooser.setCurrentDirectory(new  File("."+File.separator)); 
+               chooser.setFileFilter(filter);
+               chooser.setAcceptAllFileFilterUsed(false);
                 //Affichage et récupération de la réponse de l'utilisateur
                 int reponse = chooser.showDialog(chooser,"Enregistrer sous");
                 System.out.println(reponse);
@@ -378,7 +366,7 @@ public class Interface extends javax.swing.JFrame {
                      OuvrirFichier(fichier);
                 }
      }catch(HeadlessException he){
-               he.printStackTrace();
+               System.out.println("Problème lors de l'ouverture du fichier");
      } 
     }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
