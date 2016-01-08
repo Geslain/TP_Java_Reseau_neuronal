@@ -37,7 +37,7 @@ public class Interface extends javax.swing.JFrame {
         jLabel_Rate = new javax.swing.JLabel();
         jLabel_Indnum = new javax.swing.JLabel();
         jComboBox_Rate = new javax.swing.JComboBox();
-        jButton_Newgen = new javax.swing.JButton();
+        jButton_Newpop = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable_Recap = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -59,15 +59,27 @@ public class Interface extends javax.swing.JFrame {
         jTextField_Indnumber.setEditable(false);
         jTextField_Indnumber.setBorder(null);
 
+        jTextArea_affichage.setEditable(false);
         jTextArea_affichage.setColumns(20);
-        jTextArea_affichage.setRows(5);
+        jTextArea_affichage.setRows(1);
+        jTextArea_affichage.setAutoscrolls(false);
         jScrollPane1.setViewportView(jTextArea_affichage);
 
         jButton_Next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-dernier-icone-7114-32.png"))); // NOI18N
+        jButton_Next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_NextActionPerformed(evt);
+            }
+        });
 
         jButton_Prev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/resultset-premier-icone-4160-32.png"))); // NOI18N
 
         jToggleButton_Play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/jouer-a-droite-fleche-icone-6822-32.png"))); // NOI18N
+        jToggleButton_Play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton_PlayActionPerformed(evt);
+            }
+        });
 
         jLabel_Rate.setText("Note :");
 
@@ -75,10 +87,10 @@ public class Interface extends javax.swing.JFrame {
 
         jComboBox_Rate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5" }));
 
-        jButton_Newgen.setText("New Population");
-        jButton_Newgen.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Newpop.setText("New Population");
+        jButton_Newpop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_NewgenActionPerformed(evt);
+                jButton_NewpopActionPerformed(evt);
             }
         });
 
@@ -108,7 +120,7 @@ public class Interface extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -119,6 +131,7 @@ public class Interface extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable_Recap.setAutoscrolls(false);
         jTable_Recap.setRowHeight(19);
         jScrollPane2.setViewportView(jTable_Recap);
 
@@ -154,6 +167,16 @@ public class Interface extends javax.swing.JFrame {
         jMenu_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenu_Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/sortir-session-icone-5274-32.png"))); // NOI18N
         jMenu_Exit.setText("Fermer ");
+        jMenu_Exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu_ExitMouseClicked(evt);
+            }
+        });
+        jMenu_Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_ExitActionPerformed(evt);
+            }
+        });
         jMenu_Fichier.add(jMenu_Exit);
 
         jMenuBar_princpal.add(jMenu_Fichier);
@@ -170,9 +193,9 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_Newgen, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel_Rate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -183,16 +206,16 @@ public class Interface extends javax.swing.JFrame {
                                 .addGap(32, 32, 32)
                                 .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton_Prev, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton_Play, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jToggleButton_Play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton_Next, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                             .addComponent(jLabel1))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,12 +237,10 @@ public class Interface extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)))
-                .addComponent(jButton_Newgen, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jButton_Newpop, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
@@ -234,9 +255,25 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
-    private void jButton_NewgenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewgenActionPerformed
+    private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_NewgenActionPerformed
+    }//GEN-LAST:event_jButton_NewpopActionPerformed
+
+    private void jMenu_ExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu_ExitMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jMenu_ExitMouseClicked
+
+    private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenu_ExitActionPerformed
+
+    private void jToggleButton_PlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_PlayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton_PlayActionPerformed
+
+    private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_NextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,7 +311,7 @@ public class Interface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_Newgen;
+    private javax.swing.JButton jButton_Newpop;
     private javax.swing.JButton jButton_Next;
     private javax.swing.JButton jButton_Prev;
     private javax.swing.JComboBox jComboBox_Rate;
