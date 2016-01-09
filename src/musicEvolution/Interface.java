@@ -6,7 +6,9 @@
 
 package musicEvolution;
 
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.io.File;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
@@ -55,6 +57,16 @@ public class Interface extends javax.swing.JFrame {
         }
     }
     public Interface() {
+        // Obtenir la résolution de l'écran
+       Toolkit kit = Toolkit.getDefaultToolkit();
+       Dimension screenSize = kit.getScreenSize();
+       int screenHeight = screenSize.height;
+       int screenWidth = screenSize.width;
+ 
+       // Centrer la fenêtre dans l'écran
+       setSize(screenWidth / 2, screenHeight / 2);
+       setLocation(screenWidth / 4, screenHeight / 4);
+        initComponents();
         initComponents();
     }
 

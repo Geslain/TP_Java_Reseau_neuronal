@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import musicEvolution.Interfaces.Acceuil;
 
 public class MusicEvolution implements ActionListener {
     private MidiGeneratorHelper mgh;
@@ -16,8 +17,8 @@ public class MusicEvolution implements ActionListener {
         Individu i2 = new Individu();
         System.out.println(i.getInstrument());
         System.out.println(i2.getInstrument());
-        Interface mg = new Interface();
-         mg.setVisible(true);
+        Acceuil mg = new Acceuil();
+        mg.setVisible(true);
          
          
     }
