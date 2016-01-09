@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package musicEvolution;
 
 import java.awt.Dimension;
@@ -15,12 +14,14 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import musicEvolution.Interfaces.NouvellePop1;
 
 /**
  *
  * @author Drap_housse
  */
 public class Interface extends javax.swing.JFrame {
+
     private Sequence sequence;
     private Sequencer seq;
     private FileNameExtensionFilter filter;
@@ -34,11 +35,11 @@ public class Interface extends javax.swing.JFrame {
             System.out.println("Lecture du nom");
             MidiSystem.write(sequence, 1, file);
             System.out.println("Enregistrement OK : " + filename);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Oups, problème lors de la lecture !");
         }
     }
+
     void OuvrirFichier(String filename) {
         try {
             File file = new File(filename);
@@ -47,15 +48,14 @@ public class Interface extends javax.swing.JFrame {
             try {
                 seq.setSequence(sequence);
                 seq.start();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Problème de lancement du Séquenceur");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Problème : Absence de Sequence Lors de l'ouverture du fichier");
         }
     }
+
     public Interface() {
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
@@ -66,7 +66,6 @@ public class Interface extends javax.swing.JFrame {
        // Centrer la fenêtre dans l'écran
        setSize(screenWidth / 2, screenHeight / 2);
        setLocation(screenWidth / 4, screenHeight / 4);
-        initComponents();
         initComponents();
     }
 
@@ -106,6 +105,7 @@ public class Interface extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setName("MainFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(396, 352));
         setResizable(false);
 
         jTextField_Indnumber.setEditable(false);
@@ -316,29 +316,30 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_NewpopActionPerformed
-        // TODO add your handling code here:
+        NouvellePop1 param = new NouvellePop1();
+        param.setVisible(true);
     }//GEN-LAST:event_jMenu_NewpopActionPerformed
 
     private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
-                try{
-                JFileChooser chooser = new JFileChooser();
-                // Dossier Courant
-               chooser.setCurrentDirectory(new  File("."+File.separator)); 
-                //Affichage et récupération de la réponse de l'utilisateur
-                int reponse = chooser.showDialog(chooser,"Enregistrer sous");
-                System.out.println(reponse);
-               // Si l'utilisateur clique sur OK
-               if  (reponse == JFileChooser.APPROVE_OPTION){
-                      // Récupération du chemin du fichier
-                     String  fichier= chooser.getSelectedFile().toString();
-                      //Ecriture du fichier
-                     fichier = fichier + ".midi";
-                     System.out.println(fichier);
-                     EnregistrerFichier(fichier);
-                }
-     }catch(HeadlessException he){
-               he.printStackTrace();
-     } 
+        try {
+            JFileChooser chooser = new JFileChooser();
+            // Dossier Courant
+            chooser.setCurrentDirectory(new File("." + File.separator));
+            //Affichage et récupération de la réponse de l'utilisateur
+            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            System.out.println(reponse);
+            // Si l'utilisateur clique sur OK
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                // Récupération du chemin du fichier
+                String fichier = chooser.getSelectedFile().toString();
+                //Ecriture du fichier
+                fichier = fichier + ".midi";
+                System.out.println(fichier);
+                EnregistrerFichier(fichier);
+            }
+        } catch (HeadlessException he) {
+            he.printStackTrace();
+        }
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
@@ -358,28 +359,28 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_NextActionPerformed
 
     private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
-        try{
-                // Filtre MIDI
-                filter = new FileNameExtensionFilter("Fichiers .MIDI", "midi");
-                JFileChooser chooser = new JFileChooser();
-                // Dossier Courant
-               chooser.setCurrentDirectory(new  File("."+File.separator)); 
-               chooser.setFileFilter(filter);
-               chooser.setAcceptAllFileFilterUsed(false);
-                //Affichage et récupération de la réponse de l'utilisateur
-                int reponse = chooser.showDialog(chooser,"Enregistrer sous");
-                System.out.println(reponse);
-               // Si l'utilisateur clique sur OK
-               if  (reponse == JFileChooser.APPROVE_OPTION){
-                      // Récupération du chemin du fichier
-                     String  fichier= chooser.getSelectedFile().toString();
-                      //Ouverture du fichier
-                     System.out.println(fichier);
-                     OuvrirFichier(fichier);
-                }
-     }catch(HeadlessException he){
-               System.out.println("Problème lors de l'ouverture du fichier");
-     } 
+        try {
+            // Filtre MIDI
+            filter = new FileNameExtensionFilter("Fichiers .MIDI", "midi");
+            JFileChooser chooser = new JFileChooser();
+            // Dossier Courant
+            chooser.setCurrentDirectory(new File("." + File.separator));
+            chooser.setFileFilter(filter);
+            chooser.setAcceptAllFileFilterUsed(false);
+            //Affichage et récupération de la réponse de l'utilisateur
+            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            System.out.println(reponse);
+            // Si l'utilisateur clique sur OK
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                // Récupération du chemin du fichier
+                String fichier = chooser.getSelectedFile().toString();
+                //Ouverture du fichier
+                System.out.println(fichier);
+                OuvrirFichier(fichier);
+            }
+        } catch (HeadlessException he) {
+            System.out.println("Problème lors de l'ouverture du fichier");
+        }
     }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
     /**
