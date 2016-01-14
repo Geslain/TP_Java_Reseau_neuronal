@@ -14,11 +14,20 @@ import java.awt.Toolkit;
  * @author Drap_housse
  */
 public class NouvellePop1 extends javax.swing.JFrame {
-
     /**
      * Creates new form NouvellePop1
      */
+    private static int val_nbnote;
+    private static int val_taillepop;
+    private static String val_typeinstru;
+    private static int val_tempo;
+    
+    
+    
     public NouvellePop1() {
+        
+        
+        
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
        Dimension screenSize = kit.getScreenSize();
@@ -29,7 +38,40 @@ public class NouvellePop1 extends javax.swing.JFrame {
        setSize(screenWidth / 2, screenHeight / 2);
        setLocation(screenWidth / 4, screenHeight / 4);
         initComponents();
+
+        
+        
     }
+     public static int getVal_nbnote(){
+     return val_nbnote;
+    }
+
+    public static int getVal_taillepop(){
+        return val_taillepop;
+    }
+
+    public static String getVal_typeinstru(){
+        return val_typeinstru;
+    }
+
+    public static int getVal_tempo(){
+        return val_tempo;
+    }
+    
+    public void setVal_nbnote(int val_nbnote) {
+        this.val_nbnote = val_nbnote;
+    }
+    public void setVal_taillepop(int val_taillepop) {
+        this.val_taillepop = val_taillepop;
+    }
+    public void setVal_typeinstru(String val_typeinstru) {
+        this.val_typeinstru = val_typeinstru;
+    }
+    public void setVal_tempo(int val_tempo) {
+        this.val_tempo = val_tempo;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +97,10 @@ public class NouvellePop1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jSlider_Tempo.setMaximum(30);
+        jSlider_Tempo.setMinimum(10);
+        jSlider_Tempo.setValue(16);
+
         jTextField_Nombrenote.setText("16");
         jTextField_Nombrenote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,7 +108,7 @@ public class NouvellePop1 extends javax.swing.JFrame {
             }
         });
 
-        jComboBox_Type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Rock", "Classique", "Reggae", "Electro", "Jazz", " " }));
+        jComboBox_Type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Aléatoire", "Rock", "Classique", "Reggae", "Electro", "Jazz", "" }));
 
         jButton1.setText("Valider");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -162,6 +208,22 @@ public class NouvellePop1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        
+        String val_nbnote_string = jTextField_Nombrenote.getText();
+        String val_taillepop_string = jTextField_Taillepop.getText();
+        
+        setVal_nbnote(Integer.parseInt(val_nbnote_string));
+        setVal_taillepop(Integer.parseInt(val_taillepop_string));
+        
+        setVal_typeinstru((String) jComboBox_Type.getSelectedItem());
+        setVal_tempo(jSlider_Tempo.getValue());
+        System.out.println("Nb_note = "+val_nbnote);
+        System.out.println("Nb_tailepop = "+val_taillepop);
+        System.out.println("Nb_typeinstru = "+val_typeinstru);
+        System.out.println("Val_Tempo = "+val_tempo);
+        
+        musicEvolution.Population pop = new musicEvolution.Population();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -218,4 +280,7 @@ public class NouvellePop1 extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField_Nombrenote;
     private javax.swing.JTextField jTextField_Taillepop;
     // End of variables declaration//GEN-END:variables
+
+
+
 }

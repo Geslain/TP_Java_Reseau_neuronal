@@ -6,19 +6,33 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import musicEvolution.Interfaces.Acceuil;
+import musicEvolution.Interfaces.NouvellePop1;
+import org.omg.Dynamic.Parameter;
 
 public class MusicEvolution implements ActionListener {
     private MidiGeneratorHelper mgh;
     public Random geneAlea;
+
     
     public static void main(String[] args) {
         
-        Individu i = new Individu();
-        Individu i2 = new Individu();
-        System.out.println(i.getInstrument());
-        System.out.println(i2.getInstrument());
+//        Individu i = new Individu();
+//        Individu i2 = new Individu();
+//        System.out.println(i.getInstrument());
+//        System.out.println(i2.getInstrument());
+        
+        
+        
+        
         Acceuil mg = new Acceuil();
         mg.setVisible(true);
+        
+        System.out.println(musicEvolution.Interfaces.NouvellePop1.getVal_taillepop());
+        
+        
+       // System.out.println(pop.getIndividu(1).getFitness());
+        
+        
          
          
     }
