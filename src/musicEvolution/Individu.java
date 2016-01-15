@@ -59,10 +59,10 @@ public class Individu {
         setFitness(0);
         int instrumentHeritage = (int)(Math.random() * 2)+1;
         switch(instrumentHeritage){
-            case 1:
+            case 0:
                 setInstrument(parent1.getInstrument());
                 break;
-            case 2:
+            case 1:
                 setInstrument(parent2.getInstrument());
                 break;
         }
@@ -114,6 +114,7 @@ public class Individu {
             case 2 :
                 nbNotesTrack++;
                 notes = Arrays.copyOf(notes, nbNotesTrack);
+                notes[nbNotesTrack-1]=new Note();
                 for (int i=index; i<nbNotesTrack; i++ ){
                     if (i<nbNotesTrack-1){
                         notes[i+1].setId(notes[i].getId());
