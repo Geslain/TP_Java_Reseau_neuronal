@@ -64,8 +64,10 @@ public class Individu {
         switch(instrumentHeritage){
             case 0:
                 setInstrument(parent1.getInstrument());
+                break;
             case 1:
                 setInstrument(parent2.getInstrument());
+                break;
         }
         notes = new Note[nbNotesTrack];
         int cutPoint = (int)(Math.random() * nbNotesTrack)+1;
