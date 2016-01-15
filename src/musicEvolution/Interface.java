@@ -420,9 +420,10 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
+    @SuppressWarnings("empty-statement")
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
         int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
-        if(currentIndex == 9)
+        if((currentIndex == 9) || fitness_rempli()==true)
         {
             currentGen += 1;
             currentIndex = 0;
@@ -491,7 +492,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                         }
                 }
         }
-        else {
+        else{
             jTextArea_affichage.setText(jTextArea_affichage.getText().concat("Veuillez attribuer une note à chaque mélodie\n"));
             System.err.println("Veuillez attribuer une note à chaque extrait");
         }
@@ -613,26 +614,31 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         currentNote = 1;
         m.getPopulation().getIndividu(currentIndex).setFitness(1);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         currentNote = 2;
         m.getPopulation().getIndividu(currentIndex).setFitness(2);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         currentNote = 3;
         m.getPopulation().getIndividu(currentIndex).setFitness(3);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         currentNote = 4;
         m.getPopulation().getIndividu(currentIndex).setFitness(4);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         currentNote = 5;
         m.getPopulation().getIndividu(currentIndex).setFitness(5);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton_PrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PrevActionPerformed
@@ -788,5 +794,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public boolean fitness_rempli(){
+        for(int j=0;j<10;j++){
+            if((m.getPopulation().getIndividu(j).getFitness()) == 0){
+                return false;
+            }
+        }        
+        return true;
     }
 }
