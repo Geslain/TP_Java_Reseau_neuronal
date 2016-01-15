@@ -16,7 +16,6 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.internal.objects.NativeArray;
 import musicEvolution.Interfaces.NouvellePop1;
 
 /**
