@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class Individu {
     private Note notes[];
     private int fitness;
-    private static int instrument = (int)(Math.random() * 128)+1;
+    private int instrument;
     private int nbNotesTrack = 16;
     private double T_MUT = 1/nbNotesTrack;
             
@@ -32,7 +32,8 @@ public class Individu {
             notes[i] = new Note();
             notes[i].randomNote();
         }
-        fitness = 0;
+        setFitness(0);
+        setInstrument((int)(Math.random() * 128)+1);
     }
     
     /**
@@ -43,7 +44,8 @@ public class Individu {
      */
     public Individu(Individu parent) {
         notes = new Note[nbNotesTrack];
-        fitness = 0;
+        setFitness(0);
+        setInstrument(parent.getInstrument());
         for (int i=0; i<notes.length ;i++){
             notes[i] = parent.notes[i];
         }
@@ -57,7 +59,14 @@ public class Individu {
      * @param parent2 
      */
     public Individu(Individu parent1, Individu parent2) {
-        fitness = 0;
+        setFitness(0);
+        int instrumentHeritage = (int)(Math.random() * 2)+1;
+        switch(instrumentHeritage){
+            case 0:
+                setInstrument(parent1.getInstrument());
+            case 1:
+                setInstrument(parent2.getInstrument());
+        }
         notes = new Note[nbNotesTrack];
         int cutPoint = (int)(Math.random() * nbNotesTrack)+1;
         for (int i=0; i<notes.length; i++){
@@ -133,8 +142,16 @@ public class Individu {
       * 
       * @return 
       */
-    public static int getInstrument() {
+    public int getInstrument() {
         return instrument;
+    }
+    
+    /**
+     * 
+     * @param instrument 
+     */
+    public void setInstrument(int instrument) {
+        this.instrument = instrument;
     }
     
     /**
