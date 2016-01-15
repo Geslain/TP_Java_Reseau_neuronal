@@ -81,7 +81,10 @@ public class Individu {
             }
         }
     }
-    
+    /**
+     *
+     * @param index 
+     */
     public void mutationType(int index){
         int mutationType = (int)(Math.random() * 3)+1;
         while(nbNotesTrack>19 && mutationType==2){
@@ -149,8 +152,29 @@ public class Individu {
     public void setFitness(int fitness) {
         this.fitness = fitness;
     }
-
+    
+    /**
+     * 
+     * @param i
+     * @return 
+     */
     int getNote(int i) {
         return notes[i].getId();
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public int getNbNotesTrack() {
+        return nbNotesTrack;
+    }
+    
+    /**
+     * 
+     * @param nbNotesTrack 
+     */
+    public void setNbNotesTrack(int nbNotesTrack) {
+        this.nbNotesTrack = nbNotesTrack;
     }
 }
