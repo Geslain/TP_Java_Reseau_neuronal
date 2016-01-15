@@ -33,7 +33,7 @@ public class Individu {
             notes[i].randomNote();
         }
         setFitness(0);
-        setInstrument((int)(Math.random() * 128)+1);
+        setInstrument(((int)(Math.random() * 128)+1));
     }
     
     /**
@@ -62,10 +62,10 @@ public class Individu {
         setFitness(0);
         int instrumentHeritage = (int)(Math.random() * 2)+1;
         switch(instrumentHeritage){
-            case 0:
+            case 1:
                 setInstrument(parent1.getInstrument());
                 break;
-            case 1:
+            case 2:
                 setInstrument(parent2.getInstrument());
                 break;
         }

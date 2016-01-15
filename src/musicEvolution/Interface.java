@@ -217,6 +217,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jLabel1.setText("Récapitulatif :");
 
         jButton1.setText("1");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -224,6 +229,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         jButton2.setText("2");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -231,6 +241,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         jButton3.setText("3");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -238,6 +253,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         jButton4.setText("4");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -245,6 +265,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
         });
 
         jButton5.setText("5");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -406,8 +431,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
-        if(currentIndex == 10)
+        
+        int estRempli=0;
+        for(int i=0;i<10;i++) {
+                if(jTable_Recap.getValueAt(i, 1)!=null){
+                    estRempli++;
+                }
+            }
+        if(estRempli == 10)
         {
+            for(int i=0;i<10;i++) {
+                jTable_Recap.setValueAt(0, i, 1);
+            }
             currentIndex = 0;
             m.continu();
         }
@@ -434,18 +469,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jToggleButton_PlayActionPerformed
 
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
-        
-        if( (currentNote != 0 || m.getPopulation().getIndividu(currentIndex).getFitness() != 0 ) && currentIndex < 10)
-        {
-            if(currentNote != 0)
-            {
-                jTable_Recap.setValueAt(currentNote, currentIndex, 1);
-            }
+       if(currentIndex<9 && jTable_Recap.getValueAt(currentIndex, 1)!=null)
             currentIndex++;
+       else
+           System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
             currentNote = 0;            
-        } else {
-            System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
-        }        
+               
     }//GEN-LAST:event_jButton_NextActionPerformed
 
     private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
@@ -499,10 +528,45 @@ public class Interface extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton_PrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PrevActionPerformed
+        if(currentIndex>0)
         currentIndex--;
         currentNote = 0;
     }//GEN-LAST:event_jButton_PrevActionPerformed
 
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        setNotetoTrack(5);
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        
+        setNotetoTrack(4);
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        setNotetoTrack(3);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        setNotetoTrack(2);    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        setNotetoTrack(1);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    
+    private void setNotetoTrack(int currentNote){
+        m.getPopulation().getIndividu(currentIndex).setFitness(currentNote);
+        if( (currentNote != 0 || m.getPopulation().getIndividu(currentIndex).getFitness() != 0 ) && currentIndex < 10)
+        {
+            if(currentNote != 0)
+            {
+                jTable_Recap.setValueAt(currentNote, currentIndex, 1);
+            }
+            //currentIndex++;
+            //currentNote = 0;            
+        }     
+    }
 //    /**
 //     * @param args the command line arguments
 //     */
