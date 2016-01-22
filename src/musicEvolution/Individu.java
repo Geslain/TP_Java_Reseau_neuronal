@@ -13,9 +13,7 @@ public final class Individu {
     private Note notes[];
     private int fitness;
     private int instrument;
-    private int nbNotesTrack = 16;
-    private double T_MUT = 1/nbNotesTrack;
-            
+    private int nbNotesTrack = 16;            
     /**
      * Permet d'initialiser un Individu 
      * en lui attribuant une valeur de   
@@ -40,10 +38,11 @@ public final class Individu {
      * @param parent 
      */
     public Individu(Individu parent) {
-        notes = new Note[nbNotesTrack];
+        notes = new Note[parent.notes.length];
+        nbNotesTrack=parent.notes.length;
         setFitness(0);
         setInstrument(parent.getInstrument());
-        System.arraycopy(parent.notes, 0, notes, 0, notes.length);
+        notes=Arrays.copyOf(parent.notes, parent.notes.length);
     }
     
     /**
@@ -57,20 +56,42 @@ public final class Individu {
         setFitness(0);
         int instrumentHeritage = (int)(Math.random() * 2)+1;
         switch(instrumentHeritage){
-            case 0:
+            case 1:
                 setInstrument(parent1.getInstrument());
                 break;
-            case 1:
+            case 2:
                 setInstrument(parent2.getInstrument());
                 break;
         }
-        notes = new Note[nbNotesTrack];
         int cutPoint = (int)(Math.random() * nbNotesTrack)+1;
-        for (int i=0; i<notes.length; i++){
-            if(i < cutPoint) {
-                notes[i] = parent1.notes[i];
-            } else {
+        if (parent1.notes.length < parent2.notes.length){
+            notes = new Note[parent2.notes.length];
+            int i;
+            for (i=0; i<parent1.notes.length; i++){
+                if(i < cutPoint) {
+                    notes[i] = parent1.notes[i];
+                } else {
+                    notes[i] = parent2.notes[i];
+                }
+            }
+            while(i<parent2.notes.length){
                 notes[i] = parent2.notes[i];
+                i++;
+            }
+        }
+        else{
+            notes = new Note[parent1.notes.length];
+            int i;
+            for (i=0; i<parent2.notes.length; i++){
+                if(i < cutPoint) {
+                    notes[i] = parent1.notes[i];
+                } else {
+                    notes[i] = parent2.notes[i];
+                }
+            }
+            while(i<parent1.notes.length){
+                notes[i] = parent1.notes[i];
+                i++;
             }
         }
         mutation();
@@ -80,11 +101,11 @@ public final class Individu {
      * 
      */
     public void mutation(){
-        for (int i=0; i<nbNotesTrack; i++){
-            double rnd = Math.random();
-            //if( rnd < T_MUT){
+        for (int i=0; i<notes.length; i++){
+            int rnd = (int) (Math.random()*notes.length) + 1;
+            if( rnd == 1){
                 mutationType(i);
-           // }
+            }
         }
     }
     /**
@@ -92,11 +113,9 @@ public final class Individu {
      * @param index 
      */
     public void mutationType(int index){
+        nbNotesTrack=notes.length;
         int mutationType = (int)(Math.random() * 3)+1;
-        while(nbNotesTrack>19 && mutationType==2){
-            mutationType = (int)(Math.random() * 3)+1;
-        }
-        while(nbNotesTrack<10 && mutationType==1){
+        while((nbNotesTrack>19 && mutationType==2) || (nbNotesTrack<10 && mutationType==1)){
             mutationType = (int)(Math.random() * 3)+1;
         }
         switch (mutationType){
@@ -104,21 +123,23 @@ public final class Individu {
             case 1 :
                 nbNotesTrack--;
                 for (int i=index; i<nbNotesTrack; i++ ){
-                    notes[i]=notes[i+1];
+                    notes[i].setId(notes[i+1].getId());
                 }
-                notes = Arrays.copyOf(notes, notes.length-1);
+                notes = Arrays.copyOf(notes, nbNotesTrack);
                 break;
             //addition
             case 2 :
                 nbNotesTrack++;
                 notes = Arrays.copyOf(notes, nbNotesTrack);
                 notes[nbNotesTrack-1]=new Note();
-                for (int i=index; i<nbNotesTrack; i++ ){
-                    if (i<nbNotesTrack-1){
-                        notes[i+1].setId(notes[i].getId());
-                        if(i==index)
-                            notes[i].randomNote();
-                    }
+                for (int i=nbNotesTrack-1; i>=index; i-- ){
+                    //if (i<nbNotesTrack-1){
+                    if(i==index)
+                        notes[i].randomNote();
+                    else
+                        notes[i].setId(notes[i-1].getId());
+                        
+                    //}
                 }
                 break;
             //mutation

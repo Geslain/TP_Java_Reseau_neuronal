@@ -63,11 +63,40 @@ public class MidiGeneratorHelper {
             System.out.println("Oups, problème lors de l'ajout de la note !");
         }
     }
-
+    
+    void ReplayFromNote(long tick) {
+        try {
+            tick = (tick - 1) * DUREE_TICK;
+            seq.setTickPosition(tick);
+            seq.start();
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de la lecture !");
+        }
+    }
+  
+    void ReplayAfterStop () {
+        try {
+            seq.start();
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de la lecture !");
+        }
+    }
+    
     void Play() {
         try {
             seq.setSequence(sequence);
             seq.start();
+        }
+        catch (Exception e) {
+            System.out.println("Oups, problème lors de la lecture !");
+        }
+    }
+    
+     void Stop() {
+        try {
+            seq.stop();
         }
         catch (Exception e) {
             System.out.println("Oups, problème lors de la lecture !");
