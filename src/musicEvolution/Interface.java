@@ -15,6 +15,7 @@ import java.util.Observer;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import musicEvolution.Interfaces.NouvellePop1;
@@ -31,22 +32,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private Modele m;
     private int currentIndex = 0;
     private int currentNote = 0;
-    private int currentGen = 1;
-    
+    private int currentGen = 1;    
     /**
      * Creates new form Interface
      */
-    void EnregistrerFichier(String filename) {
-        try {
-            File file = new File(filename);
-            System.out.println("Lecture du nom");
-            MidiSystem.write(sequence, 1, file);
-            System.out.println("Enregistrement OK : " + filename);
-        } catch (IOException e) {
-            System.out.println("Oups, problème lors de la lecture !");
-        }
-    }
-
+    
+   
     void OuvrirFichier(String filename) {
         try {
             File file = new File(filename);
@@ -62,8 +53,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             System.out.println("Problème : Absence de Sequence Lors de l'ouverture du fichier");
         }
     }
-
-    public Interface(Modele _m) {
+     public Interface(Modele _m) {
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
        Dimension screenSize = kit.getScreenSize();
@@ -117,13 +107,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jMenu_Newpop = new javax.swing.JMenuItem();
         jMenu_Openind = new javax.swing.JMenuItem();
         jMenu_Saveas = new javax.swing.JMenuItem();
+        jMenu_SaveasInd = new javax.swing.JMenuItem();
         jMenu_Exit = new javax.swing.JMenuItem();
         jMenu_edit = new javax.swing.JMenu();
 
         jToggleButton4.setText("3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("MusicEvolution 2k15");
+        setTitle("MusicEvolution 2k16");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setName("MainFrame"); // NOI18N
@@ -285,13 +276,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Saveas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
-        jMenu_Saveas.setText("Enregistrer sous ...");
+        jMenu_Saveas.setText("Enregistrer population sous ...");
         jMenu_Saveas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_SaveasActionPerformed(evt);
             }
         });
         jMenu_Fichier.add(jMenu_Saveas);
+
+        jMenu_SaveasInd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_SaveasInd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
+        jMenu_SaveasInd.setText("Enregistrer individu sous...");
+        jMenu_SaveasInd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_SaveasIndActionPerformed(evt);
+            }
+        });
+        jMenu_Fichier.add(jMenu_SaveasInd);
 
         jMenu_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenu_Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/sortir-session-icone-5274-32.png"))); // NOI18N
@@ -321,11 +322,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                                .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton_Play, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                                .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel_Rate)
@@ -347,13 +348,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel_Indnum1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField_Gennumb, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jTextField_Gennumb, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addGap(21, 21, 21))
         );
@@ -400,6 +400,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
         try {
+            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
+            midi.Init();
             JFileChooser chooser = new JFileChooser();
             // Dossier Courant
             chooser.setCurrentDirectory(new File("." + File.separator));
@@ -411,20 +413,32 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 // Récupération du chemin du fichier
                 String fichier = chooser.getSelectedFile().toString();
                 //Ecriture du fichier
-                fichier = fichier + ".midi";
+                File fb = new File(fichier); 
+                fb.mkdirs(); 
+                String Rep = chooser.getSelectedFile().toString();
                 System.out.println(fichier);
-                EnregistrerFichier(fichier);
+                for (int j=0; j<10;j++){
+                    midi.ChoisirInstrument(m.getPopulation().getIndividu(j).getInstrument());    
+                    for(int i = 0 ; i < m.getPopulation().getIndividu(j).getNbNotesTrack() ; i++)
+                    {
+                        midi.AjouterNote(m.getPopulation().getIndividu(j).getNote(i));
+                    }
+                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".midi");
+                }
+                
             }
         } catch (HeadlessException he) {
-            he.printStackTrace();
         }
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     @SuppressWarnings("empty-statement")
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
         int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
-        if((currentIndex == 9) || fitness_rempli()==true)
+        System.out.println(fitness_rempli());
+        System.out.println(currentIndex);
+        if((currentIndex == 9) && fitness_rempli()==true )
         {
+            jTextArea_affichage.setText("");
             currentGen += 1;
             currentIndex = 0;
             m.continu();
@@ -596,7 +610,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             chooser.setFileFilter(filter);
             chooser.setAcceptAllFileFilterUsed(false);
             //Affichage et récupération de la réponse de l'utilisateur
-            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            int reponse = chooser.showDialog(chooser, "Ouvrir...");
             System.out.println(reponse);
             // Si l'utilisateur clique sur OK
             if (reponse == JFileChooser.APPROVE_OPTION) {
@@ -604,6 +618,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 String fichier = chooser.getSelectedFile().toString();
                 //Ouverture du fichier
                 System.out.println(fichier);
+                jTextArea_affichage.setText("");
+                jTextField_Indnumber.setText("1");
+                jTextField_Gennumb.setText("1");
+                currentIndex=0;
+                for(int i=0;i<10;i++){
+                    jTable_Recap.setValueAt("", i, 1);
+                }
+                for(int i = 0; i<10;i++){
+                    
+                }
                 OuvrirFichier(fichier);
             }
         } catch (HeadlessException he) {
@@ -719,12 +743,41 @@ public class Interface extends javax.swing.JFrame implements Observer {
     MidiGeneratorHelper midi = new MidiGeneratorHelper();
     midi.Init();
     midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
-        for(int i = 0 ; i < 16 ; i++)
+        for(int i = 0 ; i < m.getPopulation().getIndividu(currentIndex).getNbNotesTrack() ; i++)
         {
             midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
         }
         midi.Play();     
     }//GEN-LAST:event_jButton_PlayActionPerformed
+
+    private void jMenu_SaveasIndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasIndActionPerformed
+        try {
+            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
+            midi.Init();
+            JFileChooser chooser = new JFileChooser();
+            // Dossier Courant
+            chooser.setCurrentDirectory(new File("." + File.separator));
+            //Affichage et récupération de la réponse de l'utilisateur
+            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            System.out.println(reponse);
+            // Si l'utilisateur clique sur OK
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                // Récupération du chemin du fichier
+                String fichier = chooser.getSelectedFile().toString();
+                //Ecriture du fichier
+                fichier = fichier + ".midi";
+                midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
+                for(int i = 0 ; i < m.getPopulation().getIndividu(currentIndex).getNbNotesTrack() ; i++)
+                {
+                    midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
+                }
+                midi.EnregistrerFichier(fichier);
+                }
+                
+            
+        } catch (HeadlessException he) {
+        }
+    }//GEN-LAST:event_jMenu_SaveasIndActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -781,6 +834,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem jMenu_Newpop;
     private javax.swing.JMenuItem jMenu_Openind;
     private javax.swing.JMenuItem jMenu_Saveas;
+    private javax.swing.JMenuItem jMenu_SaveasInd;
     private javax.swing.JMenu jMenu_edit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

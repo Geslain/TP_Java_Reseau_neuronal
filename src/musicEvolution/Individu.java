@@ -9,7 +9,7 @@ import java.util.Arrays;
  *
  * @author Trusty
  */
-public class Individu {
+public final class Individu {
     private Note notes[];
     private int fitness;
     private int instrument;
@@ -43,9 +43,7 @@ public class Individu {
         notes = new Note[nbNotesTrack];
         setFitness(0);
         setInstrument(parent.getInstrument());
-        for (int i=0; i<notes.length ;i++){
-            notes[i] = parent.notes[i];
-        }
+        System.arraycopy(parent.notes, 0, notes, 0, notes.length);
     }
     
     /**
@@ -84,9 +82,9 @@ public class Individu {
     public void mutation(){
         for (int i=0; i<nbNotesTrack; i++){
             double rnd = Math.random();
-            if( rnd < T_MUT){
+            //if( rnd < T_MUT){
                 mutationType(i);
-            }
+           // }
         }
     }
     /**
