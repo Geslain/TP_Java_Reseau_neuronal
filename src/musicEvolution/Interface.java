@@ -5,18 +5,20 @@
  */
 package musicEvolution;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.internal.objects.NativeArray;
 import musicEvolution.Interfaces.NouvellePop1;
 
 /**
@@ -31,23 +33,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private Modele m;
     private int currentIndex = 0;
     private int currentNote = 0;
-
-    
-    
+    private int currentGen = 1;
     /**
      * Creates new form Interface
      */
-    void EnregistrerFichier(String filename) {
-        try {
-            File file = new File(filename);
-            System.out.println("Lecture du nom");
-            MidiSystem.write(sequence, 1, file);
-            System.out.println("Enregistrement OK : " + filename);
-        } catch (Exception e) {
-            System.out.println("Oups, problème lors de la lecture !");
-        }
-    }
-
+    
+   
     void OuvrirFichier(String filename) {
         try {
             File file = new File(filename);
@@ -63,8 +54,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             System.out.println("Problème : Absence de Sequence Lors de l'ouverture du fichier");
         }
     }
-
-    public Interface(Modele _m) {
+     public Interface(Modele _m) {
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
        Dimension screenSize = kit.getScreenSize();
@@ -78,7 +68,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
        // Centrer la fenêtre dans l'écran
        setSize(screenWidth / 2, screenHeight / 2);
        setLocation(screenWidth / 4, screenHeight / 4);
+       
+       
         initComponents();
+        jTextField_Indnumber.setText(Integer.toString(currentIndex+1));
+        jTextField_Gennumb.setText(Integer.toString(currentGen));
     }
 
     /**
@@ -96,7 +90,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jTextArea_affichage = new javax.swing.JTextArea();
         jButton_Next = new javax.swing.JButton();
         jButton_Prev = new javax.swing.JButton();
-        jToggleButton_Play = new javax.swing.JToggleButton();
         jLabel_Rate = new javax.swing.JLabel();
         jLabel_Indnum = new javax.swing.JLabel();
         jButton_Newpop = new javax.swing.JButton();
@@ -108,22 +101,28 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton_Play = new javax.swing.JButton();
+        jTextField_Gennumb = new javax.swing.JTextField();
+        jLabel_Indnum1 = new javax.swing.JLabel();
+        jSlider_Position = new javax.swing.JSlider();
         jMenuBar_princpal = new javax.swing.JMenuBar();
         jMenu_Fichier = new javax.swing.JMenu();
         jMenu_Newpop = new javax.swing.JMenuItem();
         jMenu_Openind = new javax.swing.JMenuItem();
         jMenu_Saveas = new javax.swing.JMenuItem();
+        jMenu_SaveasInd = new javax.swing.JMenuItem();
         jMenu_Exit = new javax.swing.JMenuItem();
         jMenu_edit = new javax.swing.JMenu();
 
         jToggleButton4.setText("3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("MusicEvolution 2k15");
+        setTitle("MusicEvolution 2k16");
+        setAutoRequestFocus(false);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setName("MainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(475, 390));
+        setPreferredSize(new java.awt.Dimension(487, 410));
         setResizable(false);
 
         jTextField_Indnumber.setEditable(false);
@@ -146,13 +145,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jButton_Prev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_PrevActionPerformed(evt);
-            }
-        });
-
-        jToggleButton_Play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/jouer-a-droite-fleche-icone-6822-32.png"))); // NOI18N
-        jToggleButton_Play.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton_PlayActionPerformed(evt);
             }
         });
 
@@ -252,6 +244,18 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         });
 
+        jButton_Play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/jouer-a-droite-fleche-icone-6822-32.png"))); // NOI18N
+        jButton_Play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_PlayActionPerformed(evt);
+            }
+        });
+
+        jTextField_Gennumb.setEditable(false);
+        jTextField_Gennumb.setBorder(null);
+
+        jLabel_Indnum1.setText("Génération n°");
+
         jMenu_Fichier.setText("Fichier ");
 
         jMenu_Newpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -276,13 +280,23 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Saveas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
-        jMenu_Saveas.setText("Enregistrer sous ...");
+        jMenu_Saveas.setText("Enregistrer population sous ...");
         jMenu_Saveas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu_SaveasActionPerformed(evt);
             }
         });
         jMenu_Fichier.add(jMenu_Saveas);
+
+        jMenu_SaveasInd.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenu_SaveasInd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
+        jMenu_SaveasInd.setText("Enregistrer individu sous...");
+        jMenu_SaveasInd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu_SaveasIndActionPerformed(evt);
+            }
+        });
+        jMenu_Fichier.add(jMenu_SaveasInd);
 
         jMenu_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenu_Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/sortir-session-icone-5274-32.png"))); // NOI18N
@@ -306,44 +320,51 @@ public class Interface extends javax.swing.JFrame implements Observer {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton_Play, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel_Indnum)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel_Rate)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton5)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel_Indnum)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel_Indnum1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField_Gennumb, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSlider_Position, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addGap(21, 21, 21))
+                                .addComponent(jButton_Prev, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton_Play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel_Rate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_Next, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,28 +373,37 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_Indnumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel_Indnum)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField_Gennumb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_Indnum1))
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSlider_Position, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_Prev, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(jToggleButton_Play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton_Prev, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton_Play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton_Next, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel_Rate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
                             .addComponent(jButton4)
-                            .addComponent(jButton5)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton5))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jButton_Newpop, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -386,6 +416,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
     private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
         try {
+            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
+            midi.Init();
             JFileChooser chooser = new JFileChooser();
             // Dossier Courant
             chooser.setCurrentDirectory(new File("." + File.separator));
@@ -397,22 +429,101 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 // Récupération du chemin du fichier
                 String fichier = chooser.getSelectedFile().toString();
                 //Ecriture du fichier
-                fichier = fichier + ".midi";
+                File fb = new File(fichier); 
+                fb.mkdirs(); 
+                String Rep = chooser.getSelectedFile().toString();
                 System.out.println(fichier);
-                EnregistrerFichier(fichier);
+                for (int j=0; j<10;j++){
+                    midi.ChoisirInstrument(m.getPopulation().getIndividu(j).getInstrument());    
+                    for(int i = 0 ; i < m.getPopulation().getIndividu(j).getNbNotesTrack() ; i++)
+                    {
+                        midi.AjouterNote(m.getPopulation().getIndividu(j).getNote(i));
+                    }
+                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".midi");
+                }
+                
             }
         } catch (HeadlessException he) {
-            he.printStackTrace();
         }
     }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
+    @SuppressWarnings("empty-statement")
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
-        if(currentIndex == 10)
+        int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
+        System.out.println(fitness_rempli());
+        System.out.println(currentIndex);
+        if((currentIndex == 9) && fitness_rempli()==true )
         {
+            jTextArea_affichage.setText("");
+            currentGen += 1;
             currentIndex = 0;
             m.continu();
+            jTextField_Indnumber.setText("1");
+            jTextField_Gennumb.setText(Integer.toString(currentGen));
+            for(int i=0;i<10;i++){
+                jTable_Recap.setValueAt("", i, 1);
+            }
+            if(numero_instru>=1 && numero_instru<=8){
+                    jTextArea_affichage.setText("Instrument : Piano\n");
+                }
+                else if(numero_instru>=9 && numero_instru<=16){
+                    jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
+                }
+                else if(numero_instru>=17 && numero_instru<=24){
+                    jTextArea_affichage.setText("Instrument : Organ\n");
+                }
+                else if(numero_instru>=25 && numero_instru<=32){
+                    jTextArea_affichage.setText("Instrument : Guitar\n");
+                }
+                else if(numero_instru>=33 && numero_instru<=40){
+                    jTextArea_affichage.setText("Instrument : Bass\n");
+                }
+                else if(numero_instru>=41 && numero_instru<=48){
+                    jTextArea_affichage.setText("Instrument : Strings\n");
+                }
+                else if(numero_instru>=49 && numero_instru<=56){
+                    jTextArea_affichage.setText("Instrument : Ensemble\n");
+                }
+                else if(numero_instru>=57 && numero_instru<=64){
+                    jTextArea_affichage.setText("Instrument : Brass\n");
+                }
+                else if(numero_instru>=65 && numero_instru<=72){
+                    jTextArea_affichage.setText("Instrument : Reed\n");
+                }
+                else if(numero_instru>=73 && numero_instru<=80){
+                    jTextArea_affichage.setText("Instrument : Pipe\n");
+                }
+                else if(numero_instru>=81 && numero_instru<=88){
+                    jTextArea_affichage.setText("Instrument : Synth Lead\n");
+                }
+                else if(numero_instru>=89 && numero_instru<=96){
+                    jTextArea_affichage.setText("Instrument : Synth Pad\n");
+                }
+                else if(numero_instru>=97 && numero_instru<=104){
+                    jTextArea_affichage.setText("Instrument : Synth Effects\n");
+                }
+                else if(numero_instru>=105 && numero_instru<=112){
+                    jTextArea_affichage.setText("Instrument : Ethnic\n");
+                }
+                else if(numero_instru>=113 && numero_instru<=120){
+                    jTextArea_affichage.setText("Instrument : Percussive\n");
+                }
+                else if(numero_instru>=121 && numero_instru<=128){
+                    jTextArea_affichage.setText("Instrument : Sound Effects\n");
+                }
+                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
+                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
+                for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
+                        if(i!=10){
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
+                        }
+                        else{
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
+                        }
+                }
         }
-        else {
+        else{
+            jTextArea_affichage.setText(jTextArea_affichage.getText().concat("Veuillez attribuer une note à chaque mélodie\n"));
             System.err.println("Veuillez attribuer une note à chaque extrait");
         }
     }//GEN-LAST:event_jButton_NewpopActionPerformed
@@ -421,31 +532,87 @@ public class Interface extends javax.swing.JFrame implements Observer {
         System.exit(0);
     }//GEN-LAST:event_jMenu_ExitActionPerformed
 
-    private void jToggleButton_PlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_PlayActionPerformed
-        
-    // Crée la piste midi pour l'individu courant
-    MidiGeneratorHelper midi = new MidiGeneratorHelper();
-    midi.Init();
-    midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
-        for(int i = 0 ; i < 16 ; i++)
-        {
-            midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
-        }
-        midi.Play();        
-    }//GEN-LAST:event_jToggleButton_PlayActionPerformed
-
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
-        
-        if( (currentNote != 0 || m.getPopulation().getIndividu(currentIndex).getFitness() != 0 ) && currentIndex < 10)
+        int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
+        if( (m.getPopulation().getIndividu(currentIndex).getFitness() != 0 ) && currentIndex < 10)
         {
-            if(currentNote != 0)
+            if(m.getPopulation().getIndividu(currentIndex).getFitness() != 0 )
             {
-                jTable_Recap.setValueAt(currentNote, currentIndex, 1);
+                if(currentIndex < 9)
+                {
+                    jTextArea_affichage.setText("");
+                    jTextField_Indnumber.setText(Integer.toString(currentIndex+2));
+                    if(numero_instru>=1 && numero_instru<=8){
+                        jTextArea_affichage.setText("Instrument : Piano\n");
+                    }
+                    else if(numero_instru>=9 && numero_instru<=16){
+                        jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
+                    }
+                    else if(numero_instru>=17 && numero_instru<=24){
+                        jTextArea_affichage.setText("Instrument : Organ\n");
+                    }
+                    else if(numero_instru>=25 && numero_instru<=32){
+                        jTextArea_affichage.setText("Instrument : Guitar\n");
+                    }
+                    else if(numero_instru>=33 && numero_instru<=40){
+                        jTextArea_affichage.setText("Instrument : Bass\n");
+                    }
+                    else if(numero_instru>=41 && numero_instru<=48){
+                        jTextArea_affichage.setText("Instrument : Strings\n");
+                    }
+                    else if(numero_instru>=49 && numero_instru<=56){
+                        jTextArea_affichage.setText("Instrument : Ensemble\n");
+                    }
+                    else if(numero_instru>=57 && numero_instru<=64){
+                        jTextArea_affichage.setText("Instrument : Brass\n");
+                    }
+                    else if(numero_instru>=65 && numero_instru<=72){
+                        jTextArea_affichage.setText("Instrument : Reed\n");
+                    }
+                    else if(numero_instru>=73 && numero_instru<=80){
+                        jTextArea_affichage.setText("Instrument : Pipe\n");
+                    }
+                    else if(numero_instru>=81 && numero_instru<=88){
+                        jTextArea_affichage.setText("Instrument : Synth Lead\n");
+                    }
+                    else if(numero_instru>=89 && numero_instru<=96){
+                        jTextArea_affichage.setText("Instrument : Synth Pad\n");
+                    }
+                    else if(numero_instru>=97 && numero_instru<=104){
+                        jTextArea_affichage.setText("Instrument : Synth Effects\n");
+                    }
+                    else if(numero_instru>=105 && numero_instru<=112){
+                        jTextArea_affichage.setText("Instrument : Ethnic\n");
+                    }
+                    else if(numero_instru>=113 && numero_instru<=120){
+                        jTextArea_affichage.setText("Instrument : Percussive\n");
+                    }
+                    else if(numero_instru>=121 && numero_instru<=128){
+                        jTextArea_affichage.setText("Instrument : Sound Effects\n");
+                    }
+                    jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
+                    jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
+                    for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
+                        if(i!=10){
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
+                        }
+                        else{
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
+                        }
+                    }
+                }
+                jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
             }
-            currentIndex++;
-            currentNote = 0;            
-        } else {
-            System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
+            if(currentIndex<9)
+            {
+                System.out.println(currentIndex);
+                currentIndex++;
+                System.out.println(currentIndex);
+            }
+        }
+        else if(m.getPopulation().getIndividu(currentIndex).getFitness()==0){
+           jTextArea_affichage.setText(jTextArea_affichage.getText().concat("Veuillez noter l'extrait avant de passer au suivant\n"));
+           System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
         }        
     }//GEN-LAST:event_jButton_NextActionPerformed
 
@@ -459,7 +626,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
             chooser.setFileFilter(filter);
             chooser.setAcceptAllFileFilterUsed(false);
             //Affichage et récupération de la réponse de l'utilisateur
-            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            int reponse = chooser.showDialog(chooser, "Ouvrir...");
             System.out.println(reponse);
             // Si l'utilisateur clique sur OK
             if (reponse == JFileChooser.APPROVE_OPTION) {
@@ -467,6 +634,16 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 String fichier = chooser.getSelectedFile().toString();
                 //Ouverture du fichier
                 System.out.println(fichier);
+                jTextArea_affichage.setText("");
+                jTextField_Indnumber.setText("1");
+                jTextField_Gennumb.setText("1");
+                currentIndex=0;
+                for(int i=0;i<10;i++){
+                    jTable_Recap.setValueAt("", i, 1);
+                }
+                for(int i = 0; i<10;i++){
+                    
+                }
                 OuvrirFichier(fichier);
             }
         } catch (HeadlessException he) {
@@ -477,32 +654,146 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         currentNote = 1;
         m.getPopulation().getIndividu(currentIndex).setFitness(1);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         currentNote = 2;
         m.getPopulation().getIndividu(currentIndex).setFitness(2);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         currentNote = 3;
         m.getPopulation().getIndividu(currentIndex).setFitness(3);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         currentNote = 4;
         m.getPopulation().getIndividu(currentIndex).setFitness(4);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         currentNote = 5;
         m.getPopulation().getIndividu(currentIndex).setFitness(5);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton_PrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PrevActionPerformed
-        currentIndex--;
-        currentNote = 0;
+        int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
+        if(currentIndex==0)
+        {
+            jTextArea_affichage.setText(jTextArea_affichage.getText().concat("Vous ne pouvez pas revenir sur la piste précédente\n"));
+        }
+        else if (currentNote < 9 && currentNote > 0){
+            jTextField_Indnumber.setText(Integer.toString(currentIndex));
+                if(numero_instru>=1 && numero_instru<=8){
+                    jTextArea_affichage.setText("Instrument : Piano\n");
+                }
+                else if(numero_instru>=9 && numero_instru<=16){
+                    jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
+                }
+                else if(numero_instru>=17 && numero_instru<=24){
+                    jTextArea_affichage.setText("Instrument : Organ\n");
+                }
+                else if(numero_instru>=25 && numero_instru<=32){
+                    jTextArea_affichage.setText("Instrument : Guitar\n");
+                }
+                else if(numero_instru>=33 && numero_instru<=40){
+                    jTextArea_affichage.setText("Instrument : Bass\n");
+                }
+                else if(numero_instru>=41 && numero_instru<=48){
+                    jTextArea_affichage.setText("Instrument : Strings\n");
+                }
+                else if(numero_instru>=49 && numero_instru<=56){
+                    jTextArea_affichage.setText("Instrument : Ensemble\n");
+                }
+                else if(numero_instru>=57 && numero_instru<=64){
+                    jTextArea_affichage.setText("Instrument : Brass\n");
+                }
+                else if(numero_instru>=65 && numero_instru<=72){
+                    jTextArea_affichage.setText("Instrument : Reed\n");
+                }
+                else if(numero_instru>=73 && numero_instru<=80){
+                    jTextArea_affichage.setText("Instrument : Pipe\n");
+                }
+                else if(numero_instru>=81 && numero_instru<=88){
+                    jTextArea_affichage.setText("Instrument : Synth Lead\n");
+                }
+                else if(numero_instru>=89 && numero_instru<=96){
+                    jTextArea_affichage.setText("Instrument : Synth Pad\n");
+                }
+                else if(numero_instru>=97 && numero_instru<=104){
+                    jTextArea_affichage.setText("Instrument : Synth Effects\n");
+                }
+                else if(numero_instru>=105 && numero_instru<=112){
+                    jTextArea_affichage.setText("Instrument : Ethnic\n");
+                }
+                else if(numero_instru>=113 && numero_instru<=120){
+                    jTextArea_affichage.setText("Instrument : Percussive\n");
+                }
+                else if(numero_instru>=121 && numero_instru<=128){
+                    jTextArea_affichage.setText("Instrument : Sound Effects\n");
+                }
+                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
+                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
+                for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
+                        if(i!=10){
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
+                        }
+                        else{
+                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
+                        }
+                }
+            currentIndex--;
+        }
+        else if(currentIndex == 9){
+            currentIndex--;
+        }
     }//GEN-LAST:event_jButton_PrevActionPerformed
+
+    private void jButton_PlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PlayActionPerformed
+        // Crée la piste midi pour l'individu courant
+    MidiGeneratorHelper midi = new MidiGeneratorHelper();
+    midi.Init();
+    midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
+        for(int i = 0 ; i < m.getPopulation().getIndividu(currentIndex).getNbNotesTrack() ; i++)
+        {
+            midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
+        }
+        midi.Play();     
+    }//GEN-LAST:event_jButton_PlayActionPerformed
+
+    private void jMenu_SaveasIndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasIndActionPerformed
+        try {
+            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
+            midi.Init();
+            JFileChooser chooser = new JFileChooser();
+            // Dossier Courant
+            chooser.setCurrentDirectory(new File("." + File.separator));
+            //Affichage et récupération de la réponse de l'utilisateur
+            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            System.out.println(reponse);
+            // Si l'utilisateur clique sur OK
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                // Récupération du chemin du fichier
+                String fichier = chooser.getSelectedFile().toString();
+                //Ecriture du fichier
+                fichier = fichier + ".midi";
+                midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
+                for(int i = 0 ; i < m.getPopulation().getIndividu(currentIndex).getNbNotesTrack() ; i++)
+                {
+                    midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
+                }
+                midi.EnregistrerFichier(fichier);
+                }
+                
+            
+        } catch (HeadlessException he) {
+        }
+    }//GEN-LAST:event_jMenu_SaveasIndActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -547,9 +838,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton_Newpop;
     private javax.swing.JButton jButton_Next;
+    private javax.swing.JButton jButton_Play;
     private javax.swing.JButton jButton_Prev;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_Indnum;
+    private javax.swing.JLabel jLabel_Indnum1;
     private javax.swing.JLabel jLabel_Rate;
     private javax.swing.JMenuBar jMenuBar_princpal;
     private javax.swing.JMenuItem jMenu_Exit;
@@ -557,18 +850,31 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem jMenu_Newpop;
     private javax.swing.JMenuItem jMenu_Openind;
     private javax.swing.JMenuItem jMenu_Saveas;
+    private javax.swing.JMenuItem jMenu_SaveasInd;
     private javax.swing.JMenu jMenu_edit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSlider jSlider_Position;
     private javax.swing.JTable jTable_Recap;
     private javax.swing.JTextArea jTextArea_affichage;
+    private javax.swing.JTextField jTextField_Gennumb;
     private javax.swing.JTextField jTextField_Indnumber;
     private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton_Play;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void update(Observable o, Object arg) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    
+    public boolean fitness_rempli(){
+        for(int j=0;j<10;j++){
+            if((m.getPopulation().getIndividu(j).getFitness()) == 0){
+                return false;
+            }
+        }        
+        return true;
     }
 }

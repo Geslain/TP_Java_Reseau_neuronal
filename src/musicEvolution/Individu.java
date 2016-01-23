@@ -3,22 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package musicEvolution;
-
-import java.io.File;
-import java.io.FileWriter;
-
+import java.util.Arrays;
 /**
  *
  * @author Trusty
  */
-public class Individu {
+public final class Individu {
     private Note notes[];
     private int fitness;
-    private static int instrument = (int)(Math.random() * 128)+1;
-    private static int NB_NOTES_TRACK = 16;
-    private double T_MUT = 1/NB_NOTES_TRACK;
+    private int instrument;
+    private int nbNotesTrack = 16;
+    private double T_MUT = 1/nbNotesTrack;
             
     /**
      * Permet d'initialiser un Individu 
@@ -28,12 +24,13 @@ public class Individu {
      * notes.                           
      */
     public Individu() {
-        notes = new Note[NB_NOTES_TRACK];
-        for (int i=0; i<NB_NOTES_TRACK; i++){
+        notes = new Note[nbNotesTrack];
+        for (int i=0; i<notes.length; i++){
             notes[i] = new Note();
             notes[i].randomNote();
         }
-        fitness = 0;
+        setFitness(0);
+        setInstrument(((int)(Math.random() * 128)+1));
     }
     
     /**
@@ -43,11 +40,10 @@ public class Individu {
      * @param parent 
      */
     public Individu(Individu parent) {
-        notes = new Note[NB_NOTES_TRACK];
-        fitness = 0;
-        for (int i=0; i<NB_NOTES_TRACK ;i++){
-            notes[i] = parent.notes[i];
-        }
+        notes = new Note[nbNotesTrack];
+        setFitness(0);
+        setInstrument(parent.getInstrument());
+        System.arraycopy(parent.notes, 0, notes, 0, notes.length);
     }
     
     /**
@@ -58,10 +54,19 @@ public class Individu {
      * @param parent2 
      */
     public Individu(Individu parent1, Individu parent2) {
-        fitness = 0;
-        notes = new Note[NB_NOTES_TRACK];
-        int cutPoint = (int)(Math.random() * NB_NOTES_TRACK)+1;
-        for (int i=0; i<NB_NOTES_TRACK; i++){
+        setFitness(0);
+        int instrumentHeritage = (int)(Math.random() * 2)+1;
+        switch(instrumentHeritage){
+            case 0:
+                setInstrument(parent1.getInstrument());
+                break;
+            case 1:
+                setInstrument(parent2.getInstrument());
+                break;
+        }
+        notes = new Note[nbNotesTrack];
+        int cutPoint = (int)(Math.random() * nbNotesTrack)+1;
+        for (int i=0; i<notes.length; i++){
             if(i < cutPoint) {
                 notes[i] = parent1.notes[i];
             } else {
@@ -75,13 +80,52 @@ public class Individu {
      * 
      */
     public void mutation(){
-        for (int i=0; i<NB_NOTES_TRACK; i++){
+        for (int i=0; i<nbNotesTrack; i++){
             double rnd = Math.random();
-            if( rnd < T_MUT){
-                notes[i].randomNote();
-            }
+            //if( rnd < T_MUT){
+                mutationType(i);
+           // }
         }
-        mutation();
+    }
+    /**
+     *
+     * @param index 
+     */
+    public void mutationType(int index){
+        int mutationType = (int)(Math.random() * 3)+1;
+        while(nbNotesTrack>19 && mutationType==2){
+            mutationType = (int)(Math.random() * 3)+1;
+        }
+        while(nbNotesTrack<10 && mutationType==1){
+            mutationType = (int)(Math.random() * 3)+1;
+        }
+        switch (mutationType){
+            //délétion
+            case 1 :
+                nbNotesTrack--;
+                for (int i=index; i<nbNotesTrack; i++ ){
+                    notes[i]=notes[i+1];
+                }
+                notes = Arrays.copyOf(notes, notes.length-1);
+                break;
+            //addition
+            case 2 :
+                nbNotesTrack++;
+                notes = Arrays.copyOf(notes, nbNotesTrack);
+                notes[nbNotesTrack-1]=new Note();
+                for (int i=index; i<nbNotesTrack; i++ ){
+                    if (i<nbNotesTrack-1){
+                        notes[i+1].setId(notes[i].getId());
+                        if(i==index)
+                            notes[i].randomNote();
+                    }
+                }
+                break;
+            //mutation
+            case 3 :
+                notes[index].randomNote();
+                break;
+        }
     }
     
     /**
@@ -91,13 +135,20 @@ public class Individu {
      public Note[] getNotes() {
         return notes;
     }
-
      /**
       * 
       * @return 
       */
-    public static int getInstrument() {
+    public int getInstrument() {
         return instrument;
+    }
+    
+    /**
+     * 
+     * @param instrument 
+     */
+    public void setInstrument(int instrument) {
+        this.instrument = instrument;
     }
     
     /**
@@ -107,7 +158,6 @@ public class Individu {
     public int getFitness() {
         return fitness;
     }
-
     /**
      * 
      * @param fitness 
@@ -115,8 +165,29 @@ public class Individu {
     public void setFitness(int fitness) {
         this.fitness = fitness;
     }
-
+    
+    /**
+     * 
+     * @param i
+     * @return 
+     */
     int getNote(int i) {
         return notes[i].getId();
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public int getNbNotesTrack() {
+        return nbNotesTrack;
+    }
+    
+    /**
+     * 
+     * @param nbNotesTrack 
+     */
+    public void setNbNotesTrack(int nbNotesTrack) {
+        this.nbNotesTrack = nbNotesTrack;
     }
 }

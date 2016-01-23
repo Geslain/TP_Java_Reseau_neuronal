@@ -8,6 +8,7 @@ package musicEvolution.Interfaces;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import musicEvolution.Interface;
+import musicEvolution.Modele;
 
 
 /**
@@ -75,7 +76,8 @@ public class Acceuil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Interface np = new Interface();
+        Modele m= new Modele();
+        Interface np = new Interface(m);
         this.dispose();
         np.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed

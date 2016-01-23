@@ -20,21 +20,10 @@ public class MusicEvolution implements ActionListener {
 //        Individu i2 = new Individu();
 //        System.out.println(i.getInstrument());
 //        System.out.println(i2.getInstrument());
-        
-        
-        
-        
+
         Acceuil mg = new Acceuil();
         mg.setVisible(true);
         
-        System.out.println(musicEvolution.Interfaces.NouvellePop1.getVal_taillepop());
-        
-        
-       // System.out.println(pop.getIndividu(1).getFitness());
-        
-        
-         
-         
     }
     
     public MusicEvolution() {
