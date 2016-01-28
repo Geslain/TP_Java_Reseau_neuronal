@@ -215,6 +215,11 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });
 
         jButton2.setText("2");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -439,7 +444,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     {
                         midi.AjouterNote(m.getPopulation().getIndividu(j).getNote(i));
                     }
-                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".midi");
+                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".txt");
                 }
                 
             }
@@ -794,6 +799,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
         } catch (HeadlessException he) {
         }
     }//GEN-LAST:event_jMenu_SaveasIndActionPerformed
+
+    private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        currentNote = 1;
+        m.getPopulation().getIndividu(currentIndex).setFitness(1);
+        jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
+    }//GEN-LAST:event_jButton1KeyPressed
 
 //    /**
 //     * @param args the command line arguments
