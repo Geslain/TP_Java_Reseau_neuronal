@@ -104,7 +104,8 @@ public final class Individu {
     }
         
     /**
-     * Permet de faire le test si une mutation a lieue ou non
+     * Permet de faire le test si une mutation a lieue ou non.
+     * 
      */
     public void mutation(){
         for (int i=0; i<getNbNotesTrack(); i++){
