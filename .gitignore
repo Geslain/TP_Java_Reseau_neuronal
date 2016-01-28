@@ -4,5 +4,5 @@
 # Except
 !.gitignore
 !/src/
-!/nbproject/
+!/nbproject/project.xml
 !build.xml
