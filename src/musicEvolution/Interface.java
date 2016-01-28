@@ -5,62 +5,43 @@
  */
 package musicEvolution;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Track;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import musicEvolution.Interfaces.NouvellePop1;
 
-/**
- *
- * @author Drap_housse
- */
-public class Interface extends javax.swing.JFrame implements Observer {
+public final class Interface extends javax.swing.JFrame implements Observer {
 
     private Sequence sequence;
     private Sequencer seq;
     private FileNameExtensionFilter filter;
-    private Modele m;
+    private final Modele m;
     private int currentIndex = 0;
     private int currentNote = 0;
     private int currentGen = 1;
     /**
      * Creates new form Interface
+     * @param _m
      */
-    
-   
-    void OuvrirFichier(String filename) {
-        try {
-            File file = new File(filename);
-            System.out.println("Ouverture du fichier MIDI");
-            sequence = MidiSystem.getSequence(file);
-            try {
-                seq.setSequence(sequence);
-                seq.start();
-            } catch (Exception e) {
-                System.out.println("Problème de lancement du Séquenceur");
-            }
-        } catch (Exception e) {
-            System.out.println("Problème : Absence de Sequence Lors de l'ouverture du fichier");
-        }
-    }
-     public Interface(Modele _m) {
+    public Interface(Modele _m) {
+        
         // Obtenir la résolution de l'écran
        Toolkit kit = Toolkit.getDefaultToolkit();
        Dimension screenSize = kit.getScreenSize();
        int screenHeight = screenSize.height;
        int screenWidth = screenSize.width;
        
+       //Initialisation du modèle
        m = _m;
        m.addObserver(this);
        m.demarre();
@@ -69,8 +50,12 @@ public class Interface extends javax.swing.JFrame implements Observer {
        setSize(screenWidth / 2, screenHeight / 2);
        setLocation(screenWidth / 4, screenHeight / 4);
        
-       
+       // Initialisation du Design
         initComponents();
+        int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
+        affichage_instru(numero_instru);
+        affichage_note();
+        
         jTextField_Indnumber.setText(Integer.toString(currentIndex+1));
         jTextField_Gennumb.setText(Integer.toString(currentGen));
     }
@@ -107,12 +92,9 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jSlider_Position = new javax.swing.JSlider();
         jMenuBar_princpal = new javax.swing.JMenuBar();
         jMenu_Fichier = new javax.swing.JMenu();
-        jMenu_Newpop = new javax.swing.JMenuItem();
-        jMenu_Openind = new javax.swing.JMenuItem();
         jMenu_Saveas = new javax.swing.JMenuItem();
         jMenu_SaveasInd = new javax.swing.JMenuItem();
         jMenu_Exit = new javax.swing.JMenuItem();
-        jMenu_edit = new javax.swing.JMenu();
 
         jToggleButton4.setText("3");
 
@@ -122,7 +104,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setName("MainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(487, 410));
+        setPreferredSize(new java.awt.Dimension(487, 423));
         setResizable(false);
 
         jTextField_Indnumber.setEditable(false);
@@ -203,13 +185,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
         jTable_Recap.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable_Recap.setEnabled(false);
         jTable_Recap.setFillsViewportHeight(true);
-        jTable_Recap.setIntercellSpacing(new java.awt.Dimension(10, 1));
-        jTable_Recap.setRowHeight(20);
+        jTable_Recap.setIntercellSpacing(new java.awt.Dimension(12, 1));
+        jTable_Recap.setRowHeight(23);
         jScrollPane2.setViewportView(jTable_Recap);
 
         jLabel1.setText("Récapitulatif :");
 
+        jButton1.setMnemonic(KeyEvent.VK_1);
         jButton1.setText("1");
+        jButton1.setToolTipText("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -258,26 +242,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         jMenu_Fichier.setText("Fichier ");
 
-        jMenu_Newpop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenu_Newpop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/fichier-nouveau-icone-3896-32.png"))); // NOI18N
-        jMenu_Newpop.setText("Nouvelle Population");
-        jMenu_Newpop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu_NewpopActionPerformed(evt);
-            }
-        });
-        jMenu_Fichier.add(jMenu_Newpop);
-
-        jMenu_Openind.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenu_Openind.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/blanc-fichier-un-dossier-icone-9522-32.png"))); // NOI18N
-        jMenu_Openind.setText("Ouvrir Individu...");
-        jMenu_Openind.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu_OpenindActionPerformed(evt);
-            }
-        });
-        jMenu_Fichier.add(jMenu_Openind);
-
         jMenu_Saveas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenu_Saveas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/musicEvolution/Images/disque-charger-sauvegarder-icone-9402-32.png"))); // NOI18N
         jMenu_Saveas.setText("Enregistrer population sous ...");
@@ -310,9 +274,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 
         jMenuBar_princpal.add(jMenu_Fichier);
 
-        jMenu_edit.setText("Edition");
-        jMenuBar_princpal.add(jMenu_edit);
-
         setJMenuBar(jMenuBar_princpal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -321,9 +282,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jLabel_Indnum)
@@ -355,15 +313,19 @@ public class Interface extends javax.swing.JFrame implements Observer {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_Next, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -377,8 +339,7 @@ public class Interface extends javax.swing.JFrame implements Observer {
                     .addComponent(jTextField_Gennumb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel_Indnum1))
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -400,52 +361,15 @@ public class Interface extends javax.swing.JFrame implements Observer {
                             .addComponent(jButton2)
                             .addComponent(jButton3)
                             .addComponent(jButton4)
-                            .addComponent(jButton5))))
+                            .addComponent(jButton5)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_Newpop, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton_Newpop, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenu_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_NewpopActionPerformed
-        NouvellePop1 param = new NouvellePop1();
-        param.setVisible(true);
-    }//GEN-LAST:event_jMenu_NewpopActionPerformed
-
-    private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
-        try {
-            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
-            midi.Init();
-            JFileChooser chooser = new JFileChooser();
-            // Dossier Courant
-            chooser.setCurrentDirectory(new File("." + File.separator));
-            //Affichage et récupération de la réponse de l'utilisateur
-            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
-            System.out.println(reponse);
-            // Si l'utilisateur clique sur OK
-            if (reponse == JFileChooser.APPROVE_OPTION) {
-                // Récupération du chemin du fichier
-                String fichier = chooser.getSelectedFile().toString();
-                //Ecriture du fichier
-                File fb = new File(fichier); 
-                fb.mkdirs(); 
-                String Rep = chooser.getSelectedFile().toString();
-                System.out.println(fichier);
-                for (int j=0; j<10;j++){
-                    midi.ChoisirInstrument(m.getPopulation().getIndividu(j).getInstrument());    
-                    for(int i = 0 ; i < m.getPopulation().getIndividu(j).getNbNotesTrack() ; i++)
-                    {
-                        midi.AjouterNote(m.getPopulation().getIndividu(j).getNote(i));
-                    }
-                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".midi");
-                }
-                
-            }
-        } catch (HeadlessException he) {
-        }
-    }//GEN-LAST:event_jMenu_SaveasActionPerformed
 
     @SuppressWarnings("empty-statement")
     private void jButton_NewpopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewpopActionPerformed
@@ -463,74 +387,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
             for(int i=0;i<10;i++){
                 jTable_Recap.setValueAt("", i, 1);
             }
-            if(numero_instru>=1 && numero_instru<=8){
-                    jTextArea_affichage.setText("Instrument : Piano\n");
-                }
-                else if(numero_instru>=9 && numero_instru<=16){
-                    jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
-                }
-                else if(numero_instru>=17 && numero_instru<=24){
-                    jTextArea_affichage.setText("Instrument : Organ\n");
-                }
-                else if(numero_instru>=25 && numero_instru<=32){
-                    jTextArea_affichage.setText("Instrument : Guitar\n");
-                }
-                else if(numero_instru>=33 && numero_instru<=40){
-                    jTextArea_affichage.setText("Instrument : Bass\n");
-                }
-                else if(numero_instru>=41 && numero_instru<=48){
-                    jTextArea_affichage.setText("Instrument : Strings\n");
-                }
-                else if(numero_instru>=49 && numero_instru<=56){
-                    jTextArea_affichage.setText("Instrument : Ensemble\n");
-                }
-                else if(numero_instru>=57 && numero_instru<=64){
-                    jTextArea_affichage.setText("Instrument : Brass\n");
-                }
-                else if(numero_instru>=65 && numero_instru<=72){
-                    jTextArea_affichage.setText("Instrument : Reed\n");
-                }
-                else if(numero_instru>=73 && numero_instru<=80){
-                    jTextArea_affichage.setText("Instrument : Pipe\n");
-                }
-                else if(numero_instru>=81 && numero_instru<=88){
-                    jTextArea_affichage.setText("Instrument : Synth Lead\n");
-                }
-                else if(numero_instru>=89 && numero_instru<=96){
-                    jTextArea_affichage.setText("Instrument : Synth Pad\n");
-                }
-                else if(numero_instru>=97 && numero_instru<=104){
-                    jTextArea_affichage.setText("Instrument : Synth Effects\n");
-                }
-                else if(numero_instru>=105 && numero_instru<=112){
-                    jTextArea_affichage.setText("Instrument : Ethnic\n");
-                }
-                else if(numero_instru>=113 && numero_instru<=120){
-                    jTextArea_affichage.setText("Instrument : Percussive\n");
-                }
-                else if(numero_instru>=121 && numero_instru<=128){
-                    jTextArea_affichage.setText("Instrument : Sound Effects\n");
-                }
-                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
-                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
-                for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
-                        if(i!=10){
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
-                        }
-                        else{
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
-                        }
-                }
+            affichage_instru(numero_instru);
+            affichage_note();
         }
         else{
             jTextArea_affichage.setText(jTextArea_affichage.getText().concat("Veuillez attribuer une note à chaque mélodie\n"));
             System.err.println("Veuillez attribuer une note à chaque extrait");
         }
     }//GEN-LAST:event_jButton_NewpopActionPerformed
-
-    private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jMenu_ExitActionPerformed
 
     private void jButton_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextActionPerformed
         int numero_instru = m.getPopulation().getIndividu(currentIndex).getInstrument();
@@ -542,72 +406,14 @@ public class Interface extends javax.swing.JFrame implements Observer {
                 {
                     jTextArea_affichage.setText("");
                     jTextField_Indnumber.setText(Integer.toString(currentIndex+2));
-                    if(numero_instru>=1 && numero_instru<=8){
-                        jTextArea_affichage.setText("Instrument : Piano\n");
-                    }
-                    else if(numero_instru>=9 && numero_instru<=16){
-                        jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
-                    }
-                    else if(numero_instru>=17 && numero_instru<=24){
-                        jTextArea_affichage.setText("Instrument : Organ\n");
-                    }
-                    else if(numero_instru>=25 && numero_instru<=32){
-                        jTextArea_affichage.setText("Instrument : Guitar\n");
-                    }
-                    else if(numero_instru>=33 && numero_instru<=40){
-                        jTextArea_affichage.setText("Instrument : Bass\n");
-                    }
-                    else if(numero_instru>=41 && numero_instru<=48){
-                        jTextArea_affichage.setText("Instrument : Strings\n");
-                    }
-                    else if(numero_instru>=49 && numero_instru<=56){
-                        jTextArea_affichage.setText("Instrument : Ensemble\n");
-                    }
-                    else if(numero_instru>=57 && numero_instru<=64){
-                        jTextArea_affichage.setText("Instrument : Brass\n");
-                    }
-                    else if(numero_instru>=65 && numero_instru<=72){
-                        jTextArea_affichage.setText("Instrument : Reed\n");
-                    }
-                    else if(numero_instru>=73 && numero_instru<=80){
-                        jTextArea_affichage.setText("Instrument : Pipe\n");
-                    }
-                    else if(numero_instru>=81 && numero_instru<=88){
-                        jTextArea_affichage.setText("Instrument : Synth Lead\n");
-                    }
-                    else if(numero_instru>=89 && numero_instru<=96){
-                        jTextArea_affichage.setText("Instrument : Synth Pad\n");
-                    }
-                    else if(numero_instru>=97 && numero_instru<=104){
-                        jTextArea_affichage.setText("Instrument : Synth Effects\n");
-                    }
-                    else if(numero_instru>=105 && numero_instru<=112){
-                        jTextArea_affichage.setText("Instrument : Ethnic\n");
-                    }
-                    else if(numero_instru>=113 && numero_instru<=120){
-                        jTextArea_affichage.setText("Instrument : Percussive\n");
-                    }
-                    else if(numero_instru>=121 && numero_instru<=128){
-                        jTextArea_affichage.setText("Instrument : Sound Effects\n");
-                    }
-                    jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
-                    jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
-                    for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
-                        if(i!=10){
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
-                        }
-                        else{
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
-                        }
-                    }
+                    affichage_instru(numero_instru);
+                    affichage_note();
                 }
                 jTable_Recap.setValueAt(m.getPopulation().getIndividu(currentIndex).getFitness() , currentIndex, 1);
             }
             if(currentIndex<9)
             {
-                System.out.println(currentIndex);
                 currentIndex++;
-                System.out.println(currentIndex);
             }
         }
         else if(m.getPopulation().getIndividu(currentIndex).getFitness()==0){
@@ -615,41 +421,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
            System.err.println("Veuillez Noter l'extrait avant de passer au suivant");
         }        
     }//GEN-LAST:event_jButton_NextActionPerformed
-
-    private void jMenu_OpenindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_OpenindActionPerformed
-        try {
-            // Filtre MIDI
-            filter = new FileNameExtensionFilter("Fichiers .MIDI", "midi");
-            JFileChooser chooser = new JFileChooser();
-            // Dossier Courant
-            chooser.setCurrentDirectory(new File("." + File.separator));
-            chooser.setFileFilter(filter);
-            chooser.setAcceptAllFileFilterUsed(false);
-            //Affichage et récupération de la réponse de l'utilisateur
-            int reponse = chooser.showDialog(chooser, "Ouvrir...");
-            System.out.println(reponse);
-            // Si l'utilisateur clique sur OK
-            if (reponse == JFileChooser.APPROVE_OPTION) {
-                // Récupération du chemin du fichier
-                String fichier = chooser.getSelectedFile().toString();
-                //Ouverture du fichier
-                System.out.println(fichier);
-                jTextArea_affichage.setText("");
-                jTextField_Indnumber.setText("1");
-                jTextField_Gennumb.setText("1");
-                currentIndex=0;
-                for(int i=0;i<10;i++){
-                    jTable_Recap.setValueAt("", i, 1);
-                }
-                for(int i = 0; i<10;i++){
-                    
-                }
-                OuvrirFichier(fichier);
-            }
-        } catch (HeadlessException he) {
-            System.out.println("Problème lors de l'ouverture du fichier");
-        }
-    }//GEN-LAST:event_jMenu_OpenindActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         currentNote = 1;
@@ -689,64 +460,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
         }
         else if (currentNote < 9 && currentNote > 0){
             jTextField_Indnumber.setText(Integer.toString(currentIndex));
-                if(numero_instru>=1 && numero_instru<=8){
-                    jTextArea_affichage.setText("Instrument : Piano\n");
-                }
-                else if(numero_instru>=9 && numero_instru<=16){
-                    jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
-                }
-                else if(numero_instru>=17 && numero_instru<=24){
-                    jTextArea_affichage.setText("Instrument : Organ\n");
-                }
-                else if(numero_instru>=25 && numero_instru<=32){
-                    jTextArea_affichage.setText("Instrument : Guitar\n");
-                }
-                else if(numero_instru>=33 && numero_instru<=40){
-                    jTextArea_affichage.setText("Instrument : Bass\n");
-                }
-                else if(numero_instru>=41 && numero_instru<=48){
-                    jTextArea_affichage.setText("Instrument : Strings\n");
-                }
-                else if(numero_instru>=49 && numero_instru<=56){
-                    jTextArea_affichage.setText("Instrument : Ensemble\n");
-                }
-                else if(numero_instru>=57 && numero_instru<=64){
-                    jTextArea_affichage.setText("Instrument : Brass\n");
-                }
-                else if(numero_instru>=65 && numero_instru<=72){
-                    jTextArea_affichage.setText("Instrument : Reed\n");
-                }
-                else if(numero_instru>=73 && numero_instru<=80){
-                    jTextArea_affichage.setText("Instrument : Pipe\n");
-                }
-                else if(numero_instru>=81 && numero_instru<=88){
-                    jTextArea_affichage.setText("Instrument : Synth Lead\n");
-                }
-                else if(numero_instru>=89 && numero_instru<=96){
-                    jTextArea_affichage.setText("Instrument : Synth Pad\n");
-                }
-                else if(numero_instru>=97 && numero_instru<=104){
-                    jTextArea_affichage.setText("Instrument : Synth Effects\n");
-                }
-                else if(numero_instru>=105 && numero_instru<=112){
-                    jTextArea_affichage.setText("Instrument : Ethnic\n");
-                }
-                else if(numero_instru>=113 && numero_instru<=120){
-                    jTextArea_affichage.setText("Instrument : Percussive\n");
-                }
-                else if(numero_instru>=121 && numero_instru<=128){
-                    jTextArea_affichage.setText("Instrument : Sound Effects\n");
-                }
-                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n\n"));
-                jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
-                for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
-                        if(i!=10){
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
-                        }
-                        else{
-                            jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
-                        }
-                }
+            affichage_instru(numero_instru);
+            affichage_note();
             currentIndex--;
         }
         else if(currentIndex == 9){
@@ -766,40 +481,98 @@ public class Interface extends javax.swing.JFrame implements Observer {
         midi.Play();     
     }//GEN-LAST:event_jButton_PlayActionPerformed
 
+    private void jMenu_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_ExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenu_ExitActionPerformed
+
     private void jMenu_SaveasIndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasIndActionPerformed
         try {
             MidiGeneratorHelper midi  = new MidiGeneratorHelper();
             midi.Init();
             JFileChooser chooser = new JFileChooser();
+
             // Dossier Courant
             chooser.setCurrentDirectory(new File("." + File.separator));
+
             //Affichage et récupération de la réponse de l'utilisateur
             int reponse = chooser.showDialog(chooser, "Enregistrer sous");
             System.out.println(reponse);
+
             // Si l'utilisateur clique sur OK
             if (reponse == JFileChooser.APPROVE_OPTION) {
                 // Récupération du chemin du fichier
                 String fichier = chooser.getSelectedFile().toString();
+
                 //Ecriture du fichier
                 fichier = fichier + ".midi";
-                midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());    
+                midi.ChoisirInstrument(m.getPopulation().getIndividu(currentIndex).getInstrument());
                 for(int i = 0 ; i < m.getPopulation().getIndividu(currentIndex).getNbNotesTrack() ; i++)
                 {
                     midi.AjouterNote(m.getPopulation().getIndividu(currentIndex).getNote(i));
                 }
                 midi.EnregistrerFichier(fichier);
-                }
-                
-            
-        } catch (HeadlessException he) {
+            }
+
+        }
+        catch (HeadlessException he) {
+            System.err.print("Errueur lors de la sauvegarde d'un individu");
         }
     }//GEN-LAST:event_jMenu_SaveasIndActionPerformed
 
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
+    private void jMenu_SaveasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu_SaveasActionPerformed
+        try {
+            MidiGeneratorHelper midi  = new MidiGeneratorHelper();
+            midi.Init();
+            JFileChooser chooser = new JFileChooser();
+
+            // Dossier Courant
+            chooser.setCurrentDirectory(new File("." + File.separator));
+
+            //Affichage et récupération de la réponse de l'utilisateur
+            int reponse = chooser.showDialog(chooser, "Enregistrer sous");
+            System.out.println(reponse);
+
+            // Si l'utilisateur clique sur OK
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                // Récupération du chemin du fichier
+                String fichier = chooser.getSelectedFile().toString();
+                String Notation = chooser.getSelectedFile().toString();
+
+                //Ecriture du fichier
+                File fb = new File(fichier);
+                
+                fb.mkdirs();
+                String Rep = chooser.getSelectedFile().toString();
+                
+                try {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(Rep+"Notation.txt")))) {
+                        for(int i=0; i<10;i++){
+                            int piste = i+1;
+                            writer.write("Piste n°"+piste+" : ");
+                            writer.write(jTable_Recap.getValueAt(i, 1)+"\r\n");
+                        }
+                    }
+                    }
+                catch (IOException e)
+                {
+                }
+                
+                System.out.println(fichier);
+                for (int j=0; j<10;j++){
+                    midi.ChoisirInstrument(m.getPopulation().getIndividu(j).getInstrument());
+                    for(int i = 0 ; i < m.getPopulation().getIndividu(j).getNbNotesTrack() ; i++)
+                    {
+                        midi.AjouterNote(m.getPopulation().getIndividu(j).getNote(i));
+                    }
+                    midi.EnregistrerFichier(Rep+"\\"+Integer.toString(j)+".midi");
+                }
+            }
+        }
+        catch (HeadlessException he) {
+            System.err.printf("Erreur lors de la sauvegarde de population");
+        }
+    }//GEN-LAST:event_jMenu_SaveasActionPerformed
+
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
 //        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
 //         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -821,14 +594,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
 //            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new Interface().setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -847,11 +612,8 @@ public class Interface extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuBar jMenuBar_princpal;
     private javax.swing.JMenuItem jMenu_Exit;
     private javax.swing.JMenu jMenu_Fichier;
-    private javax.swing.JMenuItem jMenu_Newpop;
-    private javax.swing.JMenuItem jMenu_Openind;
     private javax.swing.JMenuItem jMenu_Saveas;
     private javax.swing.JMenuItem jMenu_SaveasInd;
-    private javax.swing.JMenu jMenu_edit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSlider jSlider_Position;
@@ -867,8 +629,6 @@ public class Interface extends javax.swing.JFrame implements Observer {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
-    
     public boolean fitness_rempli(){
         for(int j=0;j<10;j++){
             if((m.getPopulation().getIndividu(j).getFitness()) == 0){
@@ -876,5 +636,74 @@ public class Interface extends javax.swing.JFrame implements Observer {
             }
         }        
         return true;
+    }
+    
+    public void affichage_note() {
+        jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNombre de notes : "+m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()+"\n"));
+        jTextArea_affichage.setText(jTextArea_affichage.getText().concat("\nNotes : "));
+        for(int i=0; i<m.getPopulation().getIndividu(currentIndex).getNbNotesTrack();i++){
+                if(i!=10){
+                    if(i!=m.getPopulation().getIndividu(currentIndex).getNbNotesTrack()-1){
+                        jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"-");
+                    }
+                    else{
+                        jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i))));
+                    }
+                }
+                else{
+                    jTextArea_affichage.setText(jTextArea_affichage.getText().concat(Integer.toString(m.getPopulation().getIndividu(currentIndex).getNote(i)))+"\n");
+                }
+        }
+    }
+    
+    public void affichage_instru(int numero_instru){
+        if(numero_instru>=1 && numero_instru<=8){
+            jTextArea_affichage.setText("Instrument : Piano\n");
+        }
+        else if(numero_instru>=9 && numero_instru<=16){
+            jTextArea_affichage.setText("Instrument : Chromatic Percussion\n");
+        }
+        else if(numero_instru>=17 && numero_instru<=24){
+            jTextArea_affichage.setText("Instrument : Organ\n");
+        }
+        else if(numero_instru>=25 && numero_instru<=32){
+            jTextArea_affichage.setText("Instrument : Guitar\n");
+        }
+        else if(numero_instru>=33 && numero_instru<=40){
+            jTextArea_affichage.setText("Instrument : Bass\n");
+        }
+        else if(numero_instru>=41 && numero_instru<=48){
+            jTextArea_affichage.setText("Instrument : Strings\n");
+        }
+        else if(numero_instru>=49 && numero_instru<=56){
+            jTextArea_affichage.setText("Instrument : Ensemble\n");
+        }
+        else if(numero_instru>=57 && numero_instru<=64){
+            jTextArea_affichage.setText("Instrument : Brass\n");
+        }
+        else if(numero_instru>=65 && numero_instru<=72){
+            jTextArea_affichage.setText("Instrument : Reed\n");
+        }
+        else if(numero_instru>=73 && numero_instru<=80){
+            jTextArea_affichage.setText("Instrument : Pipe\n");
+        }
+        else if(numero_instru>=81 && numero_instru<=88){
+            jTextArea_affichage.setText("Instrument : Synth Lead\n");
+        }
+        else if(numero_instru>=89 && numero_instru<=96){
+            jTextArea_affichage.setText("Instrument : Synth Pad\n");
+        }
+        else if(numero_instru>=97 && numero_instru<=104){
+            jTextArea_affichage.setText("Instrument : Synth Effects\n");
+        }
+        else if(numero_instru>=105 && numero_instru<=112){
+            jTextArea_affichage.setText("Instrument : Ethnic\n");
+        }
+        else if(numero_instru>=113 && numero_instru<=120){
+            jTextArea_affichage.setText("Instrument : Percussive\n");
+        }
+        else if(numero_instru>=121 && numero_instru<=128){
+            jTextArea_affichage.setText("Instrument : Sound Effects\n");
+        }
     }
 }
