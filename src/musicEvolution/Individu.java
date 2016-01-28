@@ -10,11 +10,23 @@ import java.util.Arrays;
  * @author Trusty
  */
 public final class Individu {
-    private Note notes[];
+    
+    /*********************************************
+    *** Définition des paramètres de la classe ***
+    *********************************************/
+    
+    // Définition de notre tableau de notes de l'individu
+    private Note notes[]; 
+    
+    // Définition de la fitness de l'individu
     private int fitness;
+    
+    // Dénition de l'instrument de l'individu
     private int instrument;
+    
+    // Définition du nombre de notes de départ de notre Individu
     private int nbNotesTrack = 16;
-    private double T_MUT = 1/nbNotesTrack;
+    
             
     /**
      * Permet d'initialiser un Individu 
@@ -24,26 +36,27 @@ public final class Individu {
      * notes.                           
      */
     public Individu() {
-        notes = new Note[nbNotesTrack];
-        for (int i=0; i<notes.length; i++){
+        setFitness(0);
+        setInstrument(((int)(Math.random() * 128)+1));
+        notes = new Note[getNbNotesTrack()];
+        for (int i=0; i<getNotes().length; i++){
             notes[i] = new Note();
             notes[i].randomNote();
         }
-        setFitness(0);
-        setInstrument(((int)(Math.random() * 128)+1));
     }
     
     /**
      * Permet d'initialiser un Individu
-     * en fonction de ses deux parents.
+     * en fonction d'un de ses deux parents.
      * 
      * @param parent 
      */
     public Individu(Individu parent) {
-        notes = new Note[nbNotesTrack];
+        setNbNotesTrack(parent.getNbNotesTrack());
+        notes = new Note[parent.getNbNotesTrack()];
         setFitness(0);
         setInstrument(parent.getInstrument());
-        System.arraycopy(parent.notes, 0, notes, 0, notes.length);
+        System.arraycopy(parent.getNotes(), 0, getNotes(), 0, getNotes().length);
     }
     
     /**
@@ -57,46 +70,62 @@ public final class Individu {
         setFitness(0);
         int instrumentHeritage = (int)(Math.random() * 2)+1;
         switch(instrumentHeritage){
-            case 0:
+            case 1:
                 setInstrument(parent1.getInstrument());
                 break;
-            case 1:
+            case 2:
                 setInstrument(parent2.getInstrument());
                 break;
         }
-        notes = new Note[nbNotesTrack];
-        int cutPoint = (int)(Math.random() * nbNotesTrack)+1;
-        for (int i=0; i<notes.length; i++){
-            if(i < cutPoint) {
-                notes[i] = parent1.notes[i];
-            } else {
-                notes[i] = parent2.notes[i];
+        int cutPoint = (int)(Math.random() * getNbNotesTrack())+1;
+        if (parent1.getNbNotesTrack() > parent2.getNbNotesTrack()){
+            setNbNotesTrack(parent1.getNbNotesTrack());
+            notes = new Note[getNbNotesTrack()];
+            for (int i=0; i<getNotes().length; i++){
+                if(i < cutPoint) {
+                    notes[i] = parent2.notes[i];
+                } else {
+                    notes[i] = parent1.notes[i];
+                }
             }
         }
-        mutation();
+        else{
+            setNbNotesTrack(parent2.getNbNotesTrack());
+            notes = new Note[getNbNotesTrack()];
+            for (int i=0; i<getNotes().length; i++){
+                if(i < cutPoint ) {
+                    notes[i] = parent1.notes[i];
+                } else {
+                    notes[i] = parent2.notes[i];
+                }
+            }
+        }
+        
     }
         
     /**
-     * 
+     * Permet de faire le test si une mutation a lieue ou non
      */
     public void mutation(){
-        for (int i=0; i<nbNotesTrack; i++){
-            double rnd = Math.random();
-            //if( rnd < T_MUT){
+        for (int i=0; i<getNbNotesTrack(); i++){
+            int rnd = (int) (Math.random() * getNbNotesTrack())+1;
+            if( rnd == 1 ){
                 mutationType(i);
-           // }
+            }
         }
     }
     /**
-     *
+     * Procédure de mutation, selon un tirage aléatoire on détermine
+     * le type de la mutation :
+     * -Délétion : 1
+     * -Addition : 2
+     * -Mutation classique : 3
+     * 
      * @param index 
      */
     public void mutationType(int index){
         int mutationType = (int)(Math.random() * 3)+1;
-        while(nbNotesTrack>19 && mutationType==2){
-            mutationType = (int)(Math.random() * 3)+1;
-        }
-        while(nbNotesTrack<10 && mutationType==1){
+        while((nbNotesTrack>19 && mutationType==2) || (nbNotesTrack<10 && mutationType==1)){
             mutationType = (int)(Math.random() * 3)+1;
         }
         switch (mutationType){
@@ -113,11 +142,12 @@ public final class Individu {
                 nbNotesTrack++;
                 notes = Arrays.copyOf(notes, nbNotesTrack);
                 notes[nbNotesTrack-1]=new Note();
-                for (int i=index; i<nbNotesTrack; i++ ){
-                    if (i<nbNotesTrack-1){
-                        notes[i+1].setId(notes[i].getId());
-                        if(i==index)
-                            notes[i].randomNote();
+                for (int i=getNbNotesTrack()-1; i>=index; i-- ){
+                    if (i==index){
+                        notes[i].randomNote();
+                    }
+                    else{
+                        notes[i].setId(notes[i-1].getId());
                     }
                 }
                 break;
@@ -129,14 +159,14 @@ public final class Individu {
     }
     
     /**
-     * 
+     * getter notes[]
      * @return 
      */
      public Note[] getNotes() {
         return notes;
     }
      /**
-      * 
+      * getter instrument
       * @return 
       */
     public int getInstrument() {
@@ -144,7 +174,7 @@ public final class Individu {
     }
     
     /**
-     * 
+     * setter instrument
      * @param instrument 
      */
     public void setInstrument(int instrument) {
@@ -152,14 +182,14 @@ public final class Individu {
     }
     
     /**
-     * 
+     * getter fitness
      * @return 
      */
     public int getFitness() {
         return fitness;
     }
     /**
-     * 
+     * setter fitness
      * @param fitness 
      */
     public void setFitness(int fitness) {
@@ -167,7 +197,7 @@ public final class Individu {
     }
     
     /**
-     * 
+     * getter notes[i]
      * @param i
      * @return 
      */
@@ -176,7 +206,7 @@ public final class Individu {
     }
     
     /**
-     * 
+     * getter nbNotesTrack
      * @return 
      */
     public int getNbNotesTrack() {
@@ -184,7 +214,7 @@ public final class Individu {
     }
     
     /**
-     * 
+     * setter nbNotesTrack
      * @param nbNotesTrack 
      */
     public void setNbNotesTrack(int nbNotesTrack) {
